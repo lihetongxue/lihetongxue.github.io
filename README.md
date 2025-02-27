@@ -1,6 +1,6 @@
-# 我不是Eric :link: https://lihetongxue.github.io 
-### :page_facing_up: [1](https://lihetongxue.github.io/tag.html) 
+# 我不是Eric :link: http://blog.lihe.site 
+### :page_facing_up: [1](http://blog.lihe.site/tag.html) 
 ### :speech_balloon: 0 
 ### :hibiscus: 26 
-### :alarm_clock: 2025-02-27 14:01:30 
+### :alarm_clock: 2025-02-27 16:13:11 
 ### Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek)

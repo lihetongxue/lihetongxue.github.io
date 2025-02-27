@@ -2,5 +2,19 @@
     "title":"我不是Eric",
     "subTitle":"人生的道路固然漫长，但紧要之处常常只有几步",
     "avatarUrl":"https://lihe.ink/2025/02/27/67c0178c37607.jpg",
-    "GMEEK_VERSION":"last"
+    "GMEEK_VERSION":"last",
+    "homeUrl":"http://blog.lihe.site",
+    "startSite":"06/29/2023",
+    "onePageListNum":15,
+    "singlePage":["about"],
+    "iconList":{"music":"M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z"},
+    "exlink":{"music":"https://music.tuji.uk"},
+    "commentLabelColor":"#006b75",
+    "yearColorList":["#bc4c00", "#0969da", "#1f883d", "#A333D0"],
+    "i18n":"CN",
+    "UTC":8,
+    "themeMode":"manual",
+    "dayTheme":"light",
+    "nightTheme":"dark_colorblind",
+    "urlMode":"pinyin"
 }

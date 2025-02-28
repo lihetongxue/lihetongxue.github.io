@@ -20,5 +20,8 @@
     "nightTheme":"dark_colorblind",
     "urlMode":"pinyin",
     "bottomText":"转载请注明出处",
-    "needComment":0
+    "needComment":0,
+    "allHead":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>",
+    "script":"<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script>",
+    "script":"<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>"
 }

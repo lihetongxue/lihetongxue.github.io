@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/97779346?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="# 1. 总览
+
+
+## 程序员考公指南
+
+3个来自同一家大厂的程序员组团在职备考一年，上岸成功率100%。">
+<meta property="og:title" content="程序员考公指南">
+<meta property="og:description" content="# 1. 总览
+
+
+## 程序员考公指南
+
+3个来自同一家大厂的程序员组团在职备考一年，上岸成功率100%。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.lihe.site/post/cheng-xu-yuan-kao-gong-zhi-nan.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/97779346?v=4">
+<title>程序员考公指南</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">程序员考公指南</h1>
+<div class="title-right">
+    <a href="http://blog.lihe.site" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/lihetongxue/lihetongxue.github.io/issues/4" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h1>1. 总览</h1>
+<h2>程序员考公指南</h2>
+<p>3个来自同一家大厂的程序员组团在职备考一年，上岸成功率100%。我们为想进体制内的程序员写了这份<strong>考公务员/事业编制/教师</strong>的指南。</p>
+<blockquote>
+<p>后端阿强考上了一线城市公务员，前端阿珍进了离家车程10分钟的事业单位，我在回家省内高校当教师：我们都有光明的前途。</p>
+</blockquote>
+<h3>本指南的内容概要和目标人群</h3>
+<p>该指南由本人主笔，我叫阿特，我与这两位同事17年进了某大厂同一个部门。走出校门的我们走进996的部门。996一年多以后，项目“顺利”被砍，通宵达旦写出的每一行代码都被下掉。</p>
+<p>18年虽然职场PUA这个词还没如同现在这般流行，但愈发激烈的竞争与倒排工期的项目也让我逐渐失去了对原本对编程的兴趣。我开始备考各种体制内的岗位，也鼓励这两位好友与我一起备考。</p>
+<p>我们在公司“遵守劳动法”的上班制度里面见缝插针地备考。经过一年多的在职备考，我们终于都上岸了，他们俩分别去了<strong>一线城市市直公务员岗、二线城市离家很近的事业编</strong>。而我则放弃了广州的要熬夜的行政编岗位，选择了老家省会的高校教师。</p>
+<p>这一年多的备考里面，我们遇到了各种阻碍：996没时间、家人不支持，但都一一克服。在觥筹交错的散伙饭之后，我写下您眼前的这篇指南，希望它能帮助到相同处境的朋友。</p>
+<p>本指南的目标人群是想要<strong>想进体制内的程序员</strong>，尤其适合那些经过深思熟虑之后，发现程序员这份职业不能满足自己需求的人。</p>
+<p><strong>建议、吐槽、提问请点进<a href="https://github.com/coder2gwy/coder2gwy/issues/1" data-hovercard-type="issue" data-hovercard-url="/coder2gwy/coder2gwy/issues/1/hovercard">这个issue</a>。写作不易，您的star✨是我继续完善指南的动力。</strong></p>
+<p>PS.由于高校带编教师岗位少、门槛愈发高，我会花较多的笔墨和精力在考公务员/事业编制方面。</p>
+<h3>更新&amp;交流</h3>
+<p><strong>后续更新</strong>：建议关注我的公众号「程序员考公」，往后所有文章会首发于公众号，坚持高质量原创。</p>
+<p><strong>交流</strong>：想进入程序员考公交流群，请在「程序员考公」的公众号点击「拉我进群」，添加客服微信后即被拉进交流群。（若进群邀请提示<br>
+有同事已经进群，可以私信客服进另外的群。）</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/9efaaed59b11e5a1ce17a68a2a1d447fc9cdab60b939c1812229684a7ecfb4e7/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333239343436302e706e67"><img src="https://camo.githubusercontent.com/9efaaed59b11e5a1ce17a68a2a1d447fc9cdab60b939c1812229684a7ecfb4e7/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333239343436302e706e67" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb303294460.png" style="max-width: 100%;"></a></p>
+<h3>正文内容</h3>
+<p>请移步：</p>
+<ul>
+<li><a href="/%E4%B8%8A%E5%B2%B8%E7%BB%8F%E5%8E%86/">程序员成功上岸经历</a></li>
+<li><a href="/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">程序员备考的最佳实践</a></li>
+<li><a href="/%E9%81%87%E5%88%B0%E9%97%AE%E9%A2%98/">程序员备考过程中会遇到哪些问题？</a></li>
+<li><a href="/%E5%9F%BA%E6%9C%AC%E8%AE%A4%E8%AF%86/">公考公平吗，35岁再去考可以么？</a></li>
+<li><a href="/%E7%9B%B8%E5%85%B3/">资料、工具推荐和扩展阅读</a></li>
+</ul>
+<h1>2. 基本认识</h1>
+<h2>基础认知</h2>
+<h3>公考公平么？（公考特点）</h3>
+<ol>
+<li>公务员考试<strong>非常公平</strong>！
+<ul>
+<li>流程公平：拿省考举例，省考是“三异地”保险程序：异地考生+异地面试+异地考官，即A市进面试的考生在B市碰上C市的面试官。再加上面试里的“三抽签”保险程序：组内（同岗位）考生面试顺序抽签+同组考生抽签面试室+考官抽签面试室。而且，省考一般情况下本单位是在政审前都看不到考生简历的，也就是说直到政审人社部门给了招考单位拟录用名单，招考单位才知道今年招进来的考生是谁，简历如何，而在政审环节一般也不卡人。</li>
+<li>资格公平：无论是你985还是三本，只要专业符合要求，你和其他考生就是站在同一条起跑线上。</li>
+</ul>
+</li>
+<li>于此同时，公考又是残酷的。公务员考试百里挑一甚至千里挑一，而且它不像高考、考研有调剂的空间。只招一个人的岗位，排第二没有任何意义，对下次考试也不会有任何直接的帮助。</li>
+</ol>
+<h3>35岁考试再参加可以么？</h3>
+<p>可以，但是要做好再大一岁就失去公考资格的心理准备。<br>
+本科学历的考生年龄门槛为35岁，应届硕士和博士经招录机关同意，可放宽到40岁；相应的，人民警察的年龄门槛为30岁。</p>
+<h3>什么时候开始准备？</h3>
+<p><strong>越早越好</strong>，原因有二</p>
+<ol>
+<li>计算机专业考公有比较多的岗位可以报，而且计算机专业学生很大一部分都受高薪诱惑去做了程序员。</li>
+<li>早些上岸，在体制内会有更大的发展空间</li>
+</ol>
+<h3>当程序员好几年了但觉得前途无望，考公会是一个出路吗？</h3>
+<p><strong>考公是一个很好的出路。</strong></p>
+<p>一、考公的成本并不高</p>
+<p>相比于很多人口中的「程序员的后路」（开店、转PM、换行业...)，考公的成本<strong>低得多</strong>、成功的案例<strong>多得多</strong>。</p>
+<p>拿阿强举例，阿强上岸的一线城市公务员，从头到尾只花了报全退面试班的钱，那次考试甚至不需要缴纳报名费，考点就设在当时他工作的城市。</p>
+<p>如果你觉得现在的生活没有希望，碰上了工作的天花板，那么花几十块钱报个笔试，抽一个周末去参加试试水，成本会有多高呢？</p>
+<p>公考的竞争的确激烈，但是相比于开店要被坑加盟费、换行业要花钱培训，它成本低得多。</p>
+<p>二、考公的收益很大</p>
+<p>收益：一辈子的中层阶级生活水平，在你工作所在城市（不犯法不违规的前提下）</p>
+<h3>适合程序员的岗位有哪些？</h3>
+<p>这个问题类似于「适合程序员的编程语言有哪些」，答案是：所有程序员能考的岗位都适合程序员，都能发挥程序员的能力和价值。</p>
+<h1>3. 上岸经历</h1>
+<h2>程序员上岸经历</h2>
+<ul>
+<li><a href="#%E9%98%BF%E5%BC%BA%EF%BC%9A%E4%B8%80%E7%BA%BF%E5%9F%8E%E5%B8%82%E5%85%AC%E5%8A%A1%E5%91%98%E4%B8%8A%E5%B2%B8%E7%BB%8F%E5%8E%86">阿强：一线城市公务员上岸经历</a></li>
+</ul>
+<h3>阿强：一线城市公务员上岸经历</h3>
+<p>如果让我来用一个关键词来描述我的上岸经历，我一定会选择“<strong>侥幸</strong>”：侥幸于自己终于从愈发劳累的互联网行业逃了出来。再晚一点，我可能就逃不出来了。</p>
+<p>这段经历不是一个励志的故事，而是一个普通人在社会中挣扎求生的故事。</p>
+<p>我先来简单介绍下我的情况，我出生于1995年，籍贯广东。2017年本科毕业于C9某高校冷门专业。</p>
+<p>我进入互联网的过程现在回想起来也是挺曲折的：大三上学期我被师兄拿到的高薪诱惑，走上了自学编程的路。16年春招的时候进入了一家大公司实习，顺利转正。</p>
+<h4>“体制内一眼就能看到未来”</h4>
+<p>我出生于一个体制内双职工家庭，但这种工作给我的印象并不好：听母亲讲单位的八卦，参加父亲烟雾缭绕的饭局。“一眼就能看到未来”，这是我当时给体制内工作的盖棺定论。</p>
+<p>上了大学，初入互联网公司的师兄师姐像是发现了金矿，纷纷给我们推荐互联网公司，仿佛那时候的互联网是真正的净土和金矿。于是我自学编程，顺利进入互联网行业。</p>
+<h4>被毒打，放弃幻想</h4>
+<p>初入互联网的我，看到同事嘴上说的是“抓手”、“赋能”，朋友圈转发文章是《长期主义》《飞轮效应》，我感到十分的新奇。</p>
+<p>我一进公司就开始了996的生活。说实话，我当时竟然还蛮享受的。编程如此快乐，自己也在不断进步。我亲眼看到从我手下敲出的一行行代码运行在人们的设备上，帮业务解决了问题，心里真的很满足。</p>
+<p>第一年项目忙的几个月，住在郊区的我为了多些时间工作，早上六点多打车上班，在车上写代码。晚上十点之后才下班。</p>
+<p>项目过了发展阶段以后，一直半死不活。一年之后，项目被砍，通宵达旦写出的每一行代码都被下掉。同时，以前一直带我的老大哥被优化掉。他出身名校、名企，一直是部门的中流砥柱，于我而言亦师亦友。我仿佛看到了10年后的自己的样子。</p>
+<p>父母的生活的确是“一眼看得到未来”，但程序员的职业生涯于我而言却是“看不到未来”。</p>
+<ul>
+<li>
+<p>一周七天有六天需要工作，剩余的一天还需要持续地学习新技术；</p>
+</li>
+<li>
+<p>久坐、长时间盯着屏幕、时不时通宵，让身体岌岌可危；</p>
+</li>
+<li>
+<p>oncall制度，在休息日里面也提心吊胆。</p>
+</li>
+</ul>
+<p>我比之前更强烈地希望<strong>不再失去已经拥有的：健康的身体、规律的作息、陪伴家人的时间</strong>。于是我下定决心，开始备考。</p>
+<h4>备考</h4>
+<p>我是我们三个小伙伴里面最快上岸的，在职备考三个月一次上岸，方法在<a href="/%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/">程序员备考的最佳实践</a>。</p>
+<p>我认为我上岸快主要原因是发挥了自身优势：</p>
+<ol>
+<li>我是一个能全情投入的人，一旦认定了就能一直付出：我在<strong>所有的</strong>空闲时间内都在复习：坐地铁、上厕所、午休...</li>
+<li>我是一个程序员，能很快地接受新的东西并上手</li>
+<li>找到了两位引路的朋友，他们把我带进那个备考的氛围</li>
+</ol>
+<h4>上岸之后</h4>
+<p>考上之后的生活，我只想用两个字来形容：<strong>真香</strong>。</p>
+<ol>
+<li>
+<p>健康方面：在入职之后的五个月内，终于有时间锻炼、制定食谱的我迅速瘦了二十多斤，回到了大学时候的体重，快一年了也没有反弹。</p>
+</li>
+<li>
+<p>待遇方面：每个月能存下的钱和程序员时期<strong>差不多</strong>。虽然赚的不如之前，但是远离了压力、快节奏的生活后，我能做出更理性的消费选择，省下大量没必要的花费。后来偶然在知乎上看到<a href="https://www.zhihu.com/question/50186945/answer/578253354" rel="nofollow">弗兰克杨的文章</a>，深以为然，节选了一些他的描述：</p>
+</li>
+</ol>
+<blockquote>
+<p>我后来对我个人的财务进行了统计，发现，无论我挣多少钱，我都只能省下工资收入的百分之二十左右的钱，因为我收入高的时候被迫消费也高，这不是简简单单的欲望问题，许多东西在你没有那个经历的时候是不能理解的，许多消费都是被迫的。</p>
+</blockquote>
+<blockquote>
+<p>比如我在南山区中心工作的时候，由于工作性质的原因，必须住在公司附近，有深圳的朋友应该知道深圳科技园附近的小区和物价有多贵。比如我做业务性质工作的时候，要自己开车来回跑，虽然油费，食宿可以报销，但是这种频繁的出差注定会增大许多额外的开支以及患病的风险。比如一起入职，一起上培训课的几个同事约定每个月都聚一次，然后老大哥选地方，头一个月选的是海鲜自助，两百九十九，第二个月选的是新疆餐厅吃烤全羊，第三个月我只好说，出差了，不方便去了。</p>
+</blockquote>
+<ol start="3">
+<li>
+<p>生活乐趣：喜欢上了自驾游、钓鱼，周末常和几个朋友三三俩俩出去玩</p>
+</li>
+<li>
+<p>工作方面，基本不加班，965；领导同事都挺好的。这份工作能给我不少意义感，虽趣味性上比不过coding:D</p>
+</li>
+</ol>
+<h1>4. 相关</h1>
+<h3>工具</h3>
+<ul>
+<li>APP
+<ul>
+<li>粉笔公考：学习课程</li>
+<li>公考雷达：报考选岗</li>
+</ul>
+</li>
+<li>论坛
+<ul>
+<li><a href="https://bbs.qzzn.com/" rel="nofollow">QZZN——国内最大考公论坛</a></li>
+</ul>
+</li>
+<li>公众号
+<ul>
+<li>齐麒公考</li>
+<li>程序员考公</li>
+</ul>
+</li>
+</ul>
+<h3>拓展阅读</h3>
+<ul>
+<li>方法论
+<ul>
+<li><a href="https://www.zhihu.com/question/266860999/answer/613142901" rel="nofollow">行测的关键点：快</a></li>
+</ul>
+</li>
+<li>面试视频
+<ul>
+<li><a href="https://www.bilibili.com/video/BV1WT4y1g7ty?from=search&amp;seid=4151423607237314499" rel="nofollow">无领导面试模拟</a></li>
+</ul>
+</li>
+<li>公考引路人
+<ul>
+<li><a href="https://www.zhihu.com/people/MR.heihuafeifahui" rel="nofollow">知乎大V——黑化肥发灰</a></li>
+</ul>
+</li>
+<li>考公经历
+<ul>
+<li><a href="https://www.bilibili.com/video/BV1gW411x7xc/?spm_id_from=333.788.recommend_more_video.0" rel="nofollow">【纪录片】韩国公务员考试实态</a></li>
+<li><a href="https://bbs.qzzn.com/forum.php?mod=viewthread&amp;tid=16730857&amp;extra=&amp;authorid=5788628&amp;page=1" rel="nofollow">多年在职备考，35岁终于上岸</a></li>
+</ul>
+</li>
+</ul>
+<h1>5. 遇到问题</h1>
+<h2>常见Q&amp;A</h2>
+<h3>本科专业不是计算机科学的程序员，能报考计算机类的岗位吗？</h3>
+<p>不一定能。岗位的专业限制非常严格，和您的学信网专业名称必须一字不差，否则不符合报名条件。<br>
+报考不符合报名条件的岗位，结果是<strong>无法通过资格审核，白费功夫</strong>。</p>
+<p>PS.这类问题非常常见：「我有过xx行业经历，我是否就能报考体制内类似的岗位？」、「我有xx工作经验，我是否就能被分配到工作内容同为xx的岗位？」</p>
+<ol>
+<li>体制内的岗位限制条件是非常明确的，没有商量的余地，这就是让那些只能考『三不限』岗位的同学难受的主要原因——能报的岗位少且竞争奇大。</li>
+<li>考上体制内之后，你的岗位取决于单位的实际情况与分配，不会因为你的某某技能就许诺一定分配你去相应的岗位。</li>
+</ol>
+<h3>毕业不到两年，毕业后在民营企业工作，可以以应届生身份参加公考吗？</h3>
+<p>目前来看，有些省份的省考允许，但是<strong>未来说不准</strong>。</p>
+<p>首先，这种情况无法报考国考的应届生岗位，国考的应届生要求是举行考试往后推一年的毕业生。<br>
+其次，广东、浙江省考的确允许毕业两年内的考生报名，但是这一政策也在演变，拿广东选调生考试为例：广东2020年选调生考试允许毕业两年内未交社保的考生报名，但2021年的选调就限定了2021年毕业的学生，大大抬高了报考的门槛。</p>
+<p>抓紧机遇吧！</p>
+<h3>需要开报考证明么？</h3>
+<ul>
+<li>如果你是机关事业单位、国企的在编工作人员，需要单位同意报考证明</li>
+<li>如果你是私企的工作人员，不需要单位同意报考证明，因为你可以随时辞职，且辞职不涉及档案调动问题</li>
+</ul>
+<h3>政审需要查征信么？有几次逾期影响么？</h3>
+<p>会查征信，只是几次逾期的话不影响，除非是老赖或者被执行人</p>
+<blockquote>
+<p>新修订的《公务员法》以及《公务员录用规定》《公务员调任规定》（中组发[2019]21号)明确要求，在公务员录用、调任考察过程中“应当查询社会信用记录”，“被依法列为失信联合惩戒对象的”人员不得录用、调任为公务员。</p>
+</blockquote>
+<h3>现在很厌烦工作，辞职备考可行吗？</h3>
+<p>不建议辞职备考。</p>
+<ul>
+<li>如果你已婚有了家庭，辞职备考可行性很低：家庭成员如果不支持你断掉收入全职备考，那全职备考的效果反而会因为家庭关系变差而变差。</li>
+<li>如果你还没组建自己的家庭，<strong>可行</strong>：因为没有家庭，可以放手一搏。但是我本人不鼓励这种冒险的行为，因为它会带来你职业生涯的中断。全职备考的最坏结果是：考了好几年没考上，同时职业生涯也断掉了，放弃备考再去求职困难重重。</li>
+</ul>
+<h3>项目非常忙，怎么请假去参加考试和培训？</h3>
+<p>在职备考第一原则：<strong>不向任何同事透露你正在备考</strong>。</p>
+<p>请假应该遵循第一原则的同时，做到以下几点会更好：</p>
+<ul>
+<li>请假应该尽量<strong>次数少且集中</strong></li>
+<li>培训请假：
+<ol>
+<li>报考之前，根据考试公告的面试时间估算合适的报班时间</li>
+<li>朋友圈深夜发一些传达担忧/无奈情绪但不说细节的动态，leader和同组同事可见</li>
+<li>咨询想报的机构的工作人员，培训时间最短的班开始报名的时间</li>
+<li>先请假，理由是需要回必须老家处理一些事情</li>
+<li>报班</li>
+</ol>
+</li>
+<li>考试请假：家里有事需要处理</li>
+</ul>
+<h3>面试班是否有必要报？</h3>
+<p><strong>必须报</strong>，第一次进面试不报班等于把机会拱手让人。</p>
+<h3>996太累了，考公务员可行吗？</h3>
+<p>如果你现在是一回家就躺下、工作日没有时间也没有精力想别的事情、没有时间学习，那我建议你可以等等。我不会骗你说996独自在职备考也能考上，因为难度真的太高。</p>
+<p>如果你在996之后还能去刷刷leetcode、有精力学习，那我觉得可以。</p>
+<h3>待遇怎么样？</h3>
+<p>待遇还算可以，参考：<a href="https://www.zhihu.com/question/21282141" rel="nofollow">很想知道全国各地公务员的工资水平？</a></p>
+<h3>有体制内的岗位需要写代码吗？</h3>
+<p>基本没有。写业务代码是外包公司的职责，公职人员主要是负责项目管理，和外包公司对接。</p>
+<h3>备考很久一直没考上怎么办？</h3>
+<p>首先表达对你的敬意：坚持了这么久实属不易。</p>
+<p>我的建议是：坚持吧，像这个<a href="https://bbs.qzzn.com/forum.php?mod=viewthread&amp;tid=16730857&amp;extra=&amp;authorid=5788628&amp;page=1" rel="nofollow">35岁上岸的朋友</a>那样。</p>
+<p>希望这篇指南能给你一些别样的启发，甚至能让你从另一个角度（程序员的思维视角）的审视自己的整个考公经历。</p>
+<p>如果想咨询，给我发邮件<a href="mailto:mianmiantech@qq.com">mianmiantech@qq.com</a></p>
+<h3>每晚9点下班，如何安排时间学习？</h3>
+<p>贴一下我之前的工作日时间表</p>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>时间</th>
+<th>事项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>8:00</td>
+<td>起床洗漱</td>
+</tr>
+<tr>
+<td>8:10</td>
+<td>坐地铁，地铁上刷行测题目</td>
+</tr>
+<tr>
+<td>9:10</td>
+<td>到达公司，不去工位，去公司的另一栋办公大楼空会议室学习</td>
+</tr>
+<tr>
+<td>10:10</td>
+<td>去工位，吃早饭，coding或者开会</td>
+</tr>
+<tr>
+<td>12:00</td>
+<td>找空会议室自习，点外卖（周一到周四错峰吃午饭，周五找leader吃饭）</td>
+</tr>
+<tr>
+<td>13:00</td>
+<td>午饭</td>
+</tr>
+<tr>
+<td>13:20</td>
+<td>个人事务处理：买东西、缴费、刷朋友圈、玩游戏、家庭成员沟通...</td>
+</tr>
+<tr>
+<td>14:00</td>
+<td>coding或者开会</td>
+</tr>
+<tr>
+<td>18:00</td>
+<td>和同事外出吃晚饭（这段时间我不会加备考的内容，否则节奏紧凑而且和别的同事不同步，很容易被人发现你在谋划什么）</td>
+</tr>
+<tr>
+<td>19:00</td>
+<td>coding或者开会</td>
+</tr>
+<tr>
+<td>22:00</td>
+<td>打车，如果今天工作中没出什么需要额外关注的事情，那就备考</td>
+</tr>
+<tr>
+<td>23:00</td>
+<td>到家运动、洗漱</td>
+</tr>
+<tr>
+<td>24:00</td>
+<td>12点前必须入睡，因为中午肯定没时间睡觉</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<h3>行测较容易提分的模块有哪些呢，行测和申论的备考时间应该如何分配？</h3>
+<p>容易提分的模块：资料分析、数量关系、判断推理。我个人认为这三个模块咱们追求的应该是尽可能全拿下来，里面涉及到的知识程序员应该本来就信手拈来。</p>
+<p>备考时间行测与申论七三开，时间紧的话，申论按最佳实践来，注意三点：</p>
+<ul>
+<li>答到点上</li>
+<li>条理清晰</li>
+<li>字迹好看</li>
+</ul>
+<h3>选岗和专业相符对于公务员来说重要吗？自己的专业如果实在没得选，能否选三不限的岗位？这样如果真的上岸了实际的工作体验会不好吗？</h3>
+<p>重要，因为专业作为一道门槛能够帮助你减少一些竞争对手。据我了解，2021广东省考，同一单位的相似岗位，限制专业与不限制专业的报考人数比能达到1:4之多。</p>
+<p>其次，没得选就选三不限的岗位，这点没法改变只能去适应。</p>
+<p>最后，三不限上岸了以后工作体验不会有太大差别，因为分配到具体工作岗位的时候，会考虑到你原来读的专业是什么来进行分配，但请记住，分配最重要的依据是「单位缺少什么人」。</p>
+<p>PS.有一些专业是专业性较强，大概率能去到对应的业务科室：</p>
+<ul>
+<li>会计、财务</li>
+<li>临床医学、药学</li>
+</ul>
+<h3>如果gwy无法上岸，事业编是不是也能考虑？</h3>
+<p>可以，同一个单位的事业编与公务员待遇上差别是补贴部分，就我所知差距不大。长期来看，公务员的成长空间更大。</p>
+<p>其次，你可以在考上事业编之后考公务员，甚至本单位的岗位。我有两个朋友都是从原单位的事业编制考上了公务员。</p>
+<h3>现在开始准备考试的话，还来得及吗？</h3>
+<p>种一棵树最好的时间是十年前，其次是现在。</p>
+<h3>事业单位和公务员的待遇差别大吗？</h3>
+<p>不大，差距主要在补贴部分，没有工龄的新人每月差距几百¥。</p>
+<h3>专科专业不是计算机专业，后来通过自考本科考的计算机科学与技术专业，是否可以考要求计算机专业的岗位呢？</h3>
+<p>首先，需要确保你已经拿到了学位证，只有毕业证是不能报考的，你看招考公告，都是要求本科学士学位。</p>
+<p>其次，需要确保你填报的岗位要求的专业跟你学位证上面的一致，现在一般都是要求某某某类，一个大类会对应多个专业，具体可以查询与招考公告一起公布的专业目录。</p>
+<p>再次，有些招考的岗位会要求全日制学位，比如检察机关、审判机关招考的法学类都是需要全日制学位的。</p>
+<p>所以，请先确保自己拿到学位证，然后对照每次公布的招考公告跟专业目录，就可以判断自己符不符合要求了。</p>
+<h3>背调的时候会找的公司的同事领导吗，是否需要提前跟他们说好让他们多美言几句吗？</h3>
+<p>先纠正一个概念方面的小错误：「背调」是互联网公司的流程：重点在于调查候选人之前的工作履历是否属实，以及学历背景真伪。</p>
+<p>公务员的「政审」则是一个复杂的多、深度得多的流程。对于有正式工作经历的人（指的是公司为你缴纳社保、签订合同的工作。实习、兼职不算），政审的确包含了去之前履职公司的调查（但它并不是政审的重点），调查目的是了解被政审者在工作期间<strong>思想品德是否端正、是否爱国守纪</strong>等方面情况。</p>
+<p>如果平时关系不是特别恶劣，只需要在面试过了之后，请他们（HR&amp;Leader）吃顿饭表达下对你工作照顾的谢意，顺便提一下这件事情就行了。</p>
+<h1>6. 最佳实践</h1>
+<h2>步骤</h2>
+<ul>
+<li><a href="#%E5%85%AC%E5%8A%A1%E5%91%98%E7%AF%87">公务员篇</a></li>
+<li><a href="#%E5%85%AC%E5%8A%A1%E5%91%98%E7%AF%87%E6%AD%A5%E9%AA%A4%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A">公务员篇详解</a></li>
+</ul>
+<h2>公务员篇</h2>
+<h3>行测</h3>
+<ol start="0">
+<li>
+<p>明确要准备的考试，如：广东2021年省考</p>
+</li>
+<li>
+<p>限时做前一年行测真题并评分，<strong>树立benchmark</strong>，如：<a href="https://www.fenbi.com/spa/tiku/exam/practice/xingce/xingce/1183500798/3" rel="nofollow">广东2020年省考真题</a></p>
+</li>
+<li>
+<p>标出试卷中每一道题对应的<strong>题目类型的叶子节点</strong>（<strong>题目类型的叶子节点</strong>：<a href="https://www.fenbi.com/spa/tiku/guide/catalog/xingce?prefix=xingce" rel="nofollow">粉笔公考题库</a>里划分最为细致的题目类型，如数量关系-数字推理-基础数列）<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/de094487004d46c6979f16dbdd1fe61984e64ed6d6ff3e89e4a2fda31a920320/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333465636636322e706e67"><img src="https://camo.githubusercontent.com/de094487004d46c6979f16dbdd1fe61984e64ed6d6ff3e89e4a2fda31a920320/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333465636636322e706e67" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb3034ecf62.png" style="max-width: 100%;"></a></p>
+</li>
+<li>
+<p>请一位有考公经验的朋友喝咖啡，一起逐题看试卷，<strong>不设框架地提问</strong>，弄懂自己错在哪里</p>
+</li>
+<li>
+<p>每个叶子结点做十五道题，做完对答案<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/f483fd60401b24e9982aab885947d469049af7b895aa33ca69c639d6f299e28e/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333632626164362e6a7067"><img src="https://camo.githubusercontent.com/f483fd60401b24e9982aab885947d469049af7b895aa33ca69c639d6f299e28e/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333632626164362e6a7067" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb30362bad6.jpg" style="max-width: 100%;"></a></p>
+</li>
+<li>
+<p>15道里对的少于9道，再做15道，直到15道对9道为止；大于等于9道，下一个细分类型</p>
+</li>
+<li>
+<p>阶段成就：筑基成功！你已经刷完每一个细分类型，且最高准确率大于60%</p>
+</li>
+<li>
+<p>进备考群/论坛/社区，感受氛围，获取信息，参加讨论与提问，隐去个人信息</p>
+</li>
+<li>
+<p>掐时间做一套题，对比这次与第一次刷套题的操作上、心理感受上的区别，总结进步的点</p>
+</li>
+<li>
+<p>打开粉笔的错题记录，带着问题看行测书对应章节</p>
+</li>
+<li>
+<p>继续按照细分类型做题，每类刷十道，标出正确道数少于9的细分类型，针对性看书</p>
+</li>
+<li>
+<p>把考试时间减少10分钟，做一套真题</p>
+</li>
+<li>
+<p>记录在做试卷的时候出现的每一个想法与决策，如：“这道题好难，跳过去”</p>
+</li>
+<li>
+<p>尽可能参加每一次粉笔的模拟考试</p>
+</li>
+<li>
+<p>使用粉笔网的错题记录，重做所有错题</p>
+</li>
+<li>
+<p>临考试之前，宣布考场信息之前，看<a href="https://www.bilibili.com/video/BV1qy4y167VW?from=search&amp;seid=755626871186197193" rel="nofollow">b站up主公考现场视频</a>，在脑里模拟考试全流程：起床、收拾东西、坐车、到达考场、等待、进场、考试、交卷</p>
+</li>
+<li>
+<p>宣布考场信息后，尽快踩点并拍视频，回家在脑里模拟全流程，侧重演练各种异常场景：遇到不会做的题、噪音、旁边的人抖腿和填答题卡时间不够等</p>
+</li>
+</ol>
+<h3>申论</h3>
+<ol start="0">
+<li>
+<p>关注你的读者：根正苗红的公职人员，他们想看到的答案是<strong>符合当代主流价值观且落在实处</strong></p>
+</li>
+<li>
+<p>看去年真题，用<strong>树形结构自上而下</strong>地构思自己的答案，限时写答案<br>
+<a href="https://lihe.ink/2024/08/13/66bb303343cb8.webp" rel="nofollow">图片</a></p>
+</li>
+<li>
+<p>看机构的参考答案，对比自己的答案，向已成功考公的朋友提问，提问不设框架，弄清楚作者为什么这么写</p>
+</li>
+<li>
+<p>拆解参考答案，找出自己大脑不会想到的名词或者句子，理解其意思</p>
+</li>
+<li>
+<p>限时真题练习3-4篇，试图用到上一步记住的名词或句子，使用粉笔申论批改</p>
+</li>
+<li>
+<p>根据评语改进自己的答案</p>
+</li>
+<li>
+<p>练字（长期），直到写的字让别人认为很好看</p>
+</li>
+<li>
+<p>把自己落进去，写真实的内容</p>
+</li>
+<li>
+<p>多看题以及按照树形结构自上而下组织答案，对照参考答案看是否有错漏</p>
+</li>
+</ol>
+<h3>面试</h3>
+<ol start="0">
+<li>
+<p><strong>真正明确</strong><a href="http://reader.epubee.com/books/mobile/b0/b0bea497c9f3e613d73b3c220c7918ea/text00007.html" rel="nofollow">第一印象</a>的重要性</p>
+</li>
+<li>
+<p>若bmi超肥胖线，请开始减肥</p>
+</li>
+<li>
+<p>打开你的前置摄像头，看去年真题，限时组织答案并真实回答，即使磕磕绊绊甚至答不出来也坚持完成，建立benchmark</p>
+</li>
+<li>
+<p>看真题解析，学习套路，按金字塔原理组织答案并对照参考答案发现自身不足</p>
+</li>
+<li>
+<p>组队练习，直到习惯在不同的人面前流畅回答问题</p>
+</li>
+<li>
+<p>挑选衣服：不浮夸的、有质感的正装，不要弄皱它，多买一件白衬衫</p>
+</li>
+<li>
+<p>有时间就穿着正装复习、吃饭，尽快习惯它</p>
+</li>
+<li>
+<p>笔试进面之后报面试班，跟节奏走，抓紧机会在多个人面前练习，找机会给自己录像</p>
+</li>
+<li>
+<p>处好面试班同学关系，寻找优秀的、能给有效反馈的同学组成小集体，面试班结束后接着练习</p>
+</li>
+<li>
+<p>看视频，<a href="https://www.bilibili.com/video/BV15C4y1W7XC?from=search&amp;seid=9705480113909886681" rel="nofollow">结构化面试</a>、<a href="https://www.bilibili.com/video/BV1WT4y1g7ty?from=search&amp;seid=2173110650605898747" rel="nofollow">无领导小组面试</a>，大脑模拟全流程</p>
+</li>
+<li>
+<p>雕琢细节，进入面试的场地到离开的每一个环节：开门、走路、抽凳子、坐下、微笑、回答、思考、回答、离场，在线联系的时候录像，不断进步</p>
+</li>
+<li>
+<p>在面试班最后面的安排里，有仿真面试，穿正装走一次流程</p>
+</li>
+</ol>
+<h3>思维能力测试（行测的变种）</h3>
+<ol>
+<li>
+<p>压缩时间做真题逼自己出错来发现问题，10-20分钟甚至更多</p>
+</li>
+<li>
+<p>记录在做试卷的时候出现的每一个想法与决策，如：“这道题好难，跳过去”</p>
+</li>
+<li>
+<p>根据第二步暴露的问题，梳理、锤炼自己的做题流程</p>
+</li>
+</ol>
+<h3>报考</h3>
+<ol>
+<li>
+<p>使用公考雷达app筛选自己能报的岗位</p>
+</li>
+<li>
+<p>选择<strong>限制条件最多</strong>的岗位</p>
+</li>
+<li>
+<p>查找岗位信息，除了互联网能搜到的信息外，最好找到相同岗位的人咨询</p>
+</li>
+<li>
+<p>了解这个岗位的上下限、待遇来源、工作强度</p>
+</li>
+<li>
+<p>开始报名之后先报名，不用纠结</p>
+</li>
+</ol>
+<h3>体能测试</h3>
+<ol>
+<li>
+<p>进行真实的体能测试：跑道跑1000米、只穿袜子摸高、淘宝购买折返跑木块4×10掐秒进行折返跑（建议去所在地👮‍♀️学校，那里有现成的场地）</p>
+</li>
+<li>
+<p>对齐差距，明确自己还差多远</p>
+</li>
+<li>
+<p>建立目标，如1000米4分10秒</p>
+</li>
+<li>
+<p>抖音或者b站学习技巧</p>
+</li>
+<li>
+<p>坚持锻炼、训练，两天一次；一周一次模拟测试</p>
+</li>
+<li>
+<p>预防伤病：避免🏀⚽️等不稳定运动，避免在考试前两天进行剧烈运动</p>
+</li>
+<li>
+<p>大脑预演整个流程</p>
+</li>
+<li>
+<p>临场带外套长裤保暖，带功能饮料补充能量</p>
+</li>
+</ol>
+<h3>体检</h3>
+<ol>
+<li>
+<p>预检：面试完之后一天，先去三甲医院体检，心中有底。要求裸眼视力的提前预约做全飞秒</p>
+</li>
+<li>
+<p>体检前：正常作息，清淡饮食</p>
+</li>
+<li>
+<p>体检时：抽血前不喝水，抽血后及时补充水分</p>
+</li>
+<li>
+<p>后检：体检完成、原地解散之后，重新在医院做一次所有的体检项目，得知真实指标</p>
+</li>
+</ol>
+<h3>政审</h3>
+<ol>
+<li>
+<p>无犯罪证明：要求严格的单位会查三代直系亲属的无犯罪证明</p>
+</li>
+<li>
+<p>征信：老赖、被执行人过不了政审</p>
+</li>
+<li>
+<p>原单位政审</p>
+</li>
+</ol>
+<h2>公务员篇步骤详细解释</h2>
+<h3>行测</h3>
+<ol start="0">
+<li>明确要准备的考试，如：广东2021年省考</li>
+</ol>
+<p>（有清晰可以执行的目标是最为关键的，漫无目的的复习就像为没有详细说明的需求文档做技术方案设计一样。）</p>
+<ol>
+<li>限时做前一年行测真题并评分，<strong>树立benchmark</strong>，如：<a href="https://www.fenbi.com/spa/tiku/exam/practice/xingce/xingce/1183500798/3" rel="nofollow">广东2020年省考真题</a></li>
+</ol>
+<p>（此处体现了本指南与其他市面上的考公指南最不一样的地方：本指南最大程度上利用了<strong>程序员的职业优势：实践能力极强、好奇心强、学习能力强</strong>，程序员都坚信实践出真知。在开始复习的时候，增加实操经验、建立benchmark是非常关键的。）</p>
+<p>2.标出试卷中每一道题对应的<strong>题目类型的叶子节点</strong>（<strong>题目类型的叶子节点</strong>：<a href="https://www.fenbi.com/spa/tiku/guide/catalog/xingce?prefix=xingce" rel="nofollow">粉笔公考题库</a>里划分最为细致的题目类型，如数量关系-数字推理-基础数列）<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/44e3d0531eec11de5528435e404b68ba22e8d2422cf87cd9c4b543287fa1a2c3/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333563356439372e706e67"><img src="https://camo.githubusercontent.com/44e3d0531eec11de5528435e404b68ba22e8d2422cf87cd9c4b543287fa1a2c3/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333563356439372e706e67" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb3035c5d97.png" style="max-width: 100%;"></a></p>
+<p>（此步骤能完成对公务员行测知识体系的摸查，不仅让人知道有哪些题目类型，还能把题目类型和真实的题目联系在一起）</p>
+<ol start="3">
+<li>请一位有考公经验的朋友喝咖啡，一起逐题看试卷，<strong>不设框架地提问</strong>，弄懂自己错在哪里</li>
+</ol>
+<p>（请在此步骤发挥程序员的好奇心，打破沙锅问到底）</p>
+<ol start="4">
+<li>每个叶子结点做十五道题，做完对答案<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/f483fd60401b24e9982aab885947d469049af7b895aa33ca69c639d6f299e28e/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333632626164362e6a7067"><img src="https://camo.githubusercontent.com/f483fd60401b24e9982aab885947d469049af7b895aa33ca69c639d6f299e28e/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333632626164362e6a7067" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb30362bad6.jpg" style="max-width: 100%;"></a></li>
+</ol>
+<p>（15道题的设置非常巧妙：一来它能降低门槛，二来能利用碎片时间）</p>
+<ol start="5">
+<li>
+<p>15道里对的少于9道，再做15道，直到15道对9道为止；大于等于9道，下一个细分类型<br>
+（建立信心，找出规律）</p>
+</li>
+<li>
+<p>阶段成就：筑基成功！你已经刷完每一个细分类型，且最高准确率大于60%</p>
+</li>
+<li>
+<p>进备考群/论坛/社区，感受氛围，获取信息，参加讨论与提问，隐去个人信息</p>
+</li>
+<li>
+<p>掐时间做一套题，对比这次与第一次刷套题的操作上、心理感受上的区别，总结进步的点</p>
+</li>
+<li>
+<p>打开粉笔的错题记录，带着问题看行测书对应章节</p>
+</li>
+<li>
+<p>继续按照细分类型做题，每类刷十道，标出正确道数少于9的细分类型，针对性看书</p>
+</li>
+<li>
+<p>把考试时间减少10分钟，做一套真题</p>
+</li>
+<li>
+<p>记录在做试卷的时候出现的每一个想法与决策，如：“这道题好难，跳过去”</p>
+</li>
+<li>
+<p>参加每一次粉笔的模拟考试，观察自己的所处排行</p>
+</li>
+<li>
+<p>使用粉笔网的错题记录，重做所有错题</p>
+</li>
+<li>
+<p>临考试之前，宣布考场信息之前，看<a href="https://www.bilibili.com/video/BV1qy4y167VW?from=search&amp;seid=755626871186197193" rel="nofollow">b站现场视频</a>在脑里模拟考试全流程：起床、收拾东西、坐车、到达考场、等待、进场、考试、交卷</p>
+</li>
+<li>
+<p>宣布考场信息后，马上踩点并拍视频，回家在脑里模拟考试全流程，侧重演练各种异常场景：遇到不会做的题、噪音、旁边的人抖腿和填答题卡时间不够等</p>
+</li>
+</ol>
+<h3>申论</h3>
+<ol start="0">
+<li>
+<p>关注你的读者：根正苗红的公职人员，他们想看到的答案是<strong>符合当代主流价值观且落在实处</strong></p>
+</li>
+<li>
+<p>看去年真题，用<strong>树形结构自上而下</strong>地构思自己的答案，限时写答案<br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/abefc3fe2aac02b7dd5dc10b76d3d0b99521dd1e4db8c250881c68eacfb549b7/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333334336362382e77656270"><img src="https://camo.githubusercontent.com/abefc3fe2aac02b7dd5dc10b76d3d0b99521dd1e4db8c250881c68eacfb549b7/68747470733a2f2f6c6968652e696e6b2f323032342f30382f31332f363662623330333334336362382e77656270" alt="image" data-canonical-src="https://lihe.ink/2024/08/13/66bb303343cb8.webp" style="max-width: 100%;"></a><br>
+（参考《金字塔原理》）</p>
+</li>
+<li>
+<p>看机构的参考答案，对比自己的答案，向已成功考公的朋友提问，提问不设框架，弄清楚作者为什么这么写</p>
+</li>
+<li>
+<p>拆解参考答案，找出自己大脑不会想到的名词或者句子，理解其意思</p>
+</li>
+<li>
+<p>限时真题练习3-4篇，试图用到上一步记住的名词或句子，使用粉笔申论批改</p>
+</li>
+<li>
+<p>根据评语改进自己的答案</p>
+</li>
+<li>
+<p>练字（长期），直到写的字让别人认为很好看</p>
+</li>
+<li>
+<p>把自己落进去，写真实的内容</p>
+</li>
+<li>
+<p>多看题以及按照树形结构自上而下组织答案，对照参考答案看是否有错漏</p>
+</li>
+</ol>
+<h3>面试</h3>
+<ol start="0">
+<li>
+<p><strong>真正明确</strong><a href="http://reader.epubee.com/books/mobile/b0/b0bea497c9f3e613d73b3c220c7918ea/text00007.html" rel="nofollow">第一印象</a>的重要性</p>
+</li>
+<li>
+<p>若bmi超肥胖线，请开始减肥</p>
+</li>
+<li>
+<p>打开你的前置摄像头，看去年真题，限时组织答案并真实回答，即使磕磕绊绊甚至答不出来也坚持完成，建立benchmark</p>
+</li>
+<li>
+<p>看真题解析，学习套路，按金字塔原理组织答案并对照参考答案发现自身不足</p>
+</li>
+<li>
+<p>组队练习，直到习惯在不同的人面前流畅回答问题</p>
+</li>
+<li>
+<p>挑选衣服：不浮夸的、有质感的正装，不要弄皱它，多买一件白衬衫</p>
+</li>
+<li>
+<p>有时间就穿着正装复习、吃饭，习惯它</p>
+</li>
+<li>
+<p>笔试进面之后报面试班，跟节奏走，抓紧机会在多个人面前练习，给自己录像</p>
+</li>
+<li>
+<p>处好面试班同学关系，组成小集体面试班结束后练习</p>
+</li>
+<li>
+<p>雕琢细节——进入面试的场地到离开的每一个环节：开门、走路、抽凳子、坐下、微笑、回答、思考、回答、离场，在线练习的时候录像，不断进步</p>
+</li>
+<li>
+<p>大脑模拟全流程</p>
+</li>
+</ol>
+<h3>思维能力测试（行测的变种）</h3>
+<ol>
+<li>
+<p>压缩时间做真题逼自己出错来发现问题，10-20分钟甚至更多</p>
+</li>
+<li>
+<p>记录在做试卷的时候出现的每一个想法与决策，如：“这道题好难，跳过去”</p>
+</li>
+<li>
+<p>根据第二步暴露的问题，梳理、锤炼自己的做题流程</p>
+</li>
+</ol>
+<h3>报考</h3>
+<ol>
+<li>
+<p>使用公考雷达app筛选自己能报的岗位</p>
+</li>
+<li>
+<p>选择<strong>限制条件最多</strong>的岗位</p>
+</li>
+<li>
+<p>查找岗位信息，除了互联网能搜到的信息外，最好找到相同岗位的人咨询</p>
+</li>
+<li>
+<p>了解上下限、待遇来源、工作强度</p>
+</li>
+<li>
+<p>开始报名之后先报名，不用纠结</p>
+</li>
+</ol>
+<h3>体能测试</h3>
+<ol>
+<li>
+<p>进行真实的体能测试：跑道跑1000米、只穿袜子摸高、淘宝购买折返跑木块4×10掐秒进行折返跑（建议去所在地警察学校，那里有画好的线）</p>
+</li>
+<li>
+<p>对齐差距，明确自己还差多远</p>
+</li>
+<li>
+<p>建立目标，如1000米4分10秒</p>
+</li>
+<li>
+<p>抖音或者b站学习技巧</p>
+</li>
+<li>
+<p>坚持锻炼、训练，两天一次；一周一次模拟测试</p>
+</li>
+<li>
+<p>预防伤病：避免🏀⚽️等不稳定运动，避免在考试前两天进行剧烈运动</p>
+</li>
+<li>
+<p>大脑预演整个流程</p>
+</li>
+<li>
+<p>临场带外套长裤保暖，带功能饮料补充能量</p>
+</li>
+</ol>
+<h3>体检</h3>
+<ol>
+<li>
+<p>预检：面试完之后一天，先去三甲医院体检，心中有底。要求裸眼视力的提前预约做全飞秒</p>
+</li>
+<li>
+<p>体检前：正常作息，清淡饮食</p>
+</li>
+<li>
+<p>体检时：抽血前不喝水，抽血后及时补充水分</p>
+</li>
+<li>
+<p>后检：体检完成、原地解散之后，重新在医院做一次所有的体检项目，得知真实指标</p>
+</li>
+</ol>
+<h3>政审</h3>
+<ol>
+<li>
+<p>无犯罪证明：开不出就过不了。要求严格的单位会查三代直系亲属</p>
+</li>
+<li>
+<p>征信：老赖、被执行人过不了，参照公务员法</p>
+</li>
+</ol>
+<p>本文转载自: <a href="https://github.com/coder2gwy/coder2gwy">程序员考公指南</a><br>
+作者: coder2gwy</p></div>
+<div style="font-size:small;margin-top:8px;float:right;">转载请注明出处</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="http://blog.lihe.site">我不是Eric</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("06/29/2023"!=""){
+    var startSite=new Date("06/29/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>
+
+</html>

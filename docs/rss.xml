@@ -1,5 +1,43 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/97779346?v=4</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Fri, 28 Feb 2025 04:01:19 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>Eric Blog Test</title><link>http://blog.lihe.site/post/Eric%20Blog%20Test.html</link><description># 测试我的博客
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/97779346?v=4</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Fri, 28 Feb 2025 06:01:46 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>Eric Blog Test</title><link>http://blog.lihe.site/post/Eric%20Blog%20Test.html</link><description># 测试我的博客
 大家好，我的博客今天正式搭建完成！。</description><guid isPermaLink="true">http://blog.lihe.site/post/Eric%20Blog%20Test.html</guid><pubDate>Wed, 26 Feb 2025 13:01:03 +0000</pubDate></item><item><title>关于我</title><link>http://blog.lihe.site/about.html</link><description>## 👋 Hello World
 
-我是 **Eric**，一名攻城狮，现居 Beijing。</description><guid isPermaLink="true">http://blog.lihe.site/about.html</guid><pubDate>Fri, 28 Feb 2025 03:47:32 +0000</pubDate></item></channel></rss>
+大家好，我是 **Eric**  一名攻城狮，现在 Beijing  生活/工作
+
+&gt; 折腾是为了更好的不折腾
+
+---
+
+## 🚀 专业技能
+
+### 💻 编程语言
+- C/C++
+
+### 🛠️ 技术栈
+- Linux
+- Docker
+
+---
+
+## 💡 关于本站
+
+⏰ 创建于 2023/06/29
+
+### 主要内容
+- 📚 技术学习笔记
+- 🔨 项目开发经验
+- 💭 个人思考感悟
+
+---
+
+## 📮 联系我
+
+- 📧 Email：[lihe151403@gmail.com](mailto:lihe151403@gmail.com)
+- 🐱 GitHub：[lihetongxue](https://github.com/lihetongxue)](https://github.com/lihetongxue)
+- 🐧 LINUX DO：[https://linux.do/u/lihe](https://linux.do/u/lihe)
+
+---
+
+## 📝 版权声明
+
+本博客所有文章除特别声明外，均采用 [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) 许可协议。</description><guid isPermaLink="true">http://blog.lihe.site/about.html</guid><pubDate>Fri, 28 Feb 2025 03:47:32 +0000</pubDate></item></channel></rss>

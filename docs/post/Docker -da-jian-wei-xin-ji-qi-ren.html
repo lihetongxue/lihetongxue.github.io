@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/97779346?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 1. 什么是 AstrBot？
+
+![image](https://lihe.ink/2025/03/03/67c5be982ca9b.png)
+
+AstrBot 是一个易于上手的多平台聊天机器人及开发框架。">
+<meta property="og:title" content="Docker 搭建微信机器人">
+<meta property="og:description" content="## 1. 什么是 AstrBot？
+
+![image](https://lihe.ink/2025/03/03/67c5be982ca9b.png)
+
+AstrBot 是一个易于上手的多平台聊天机器人及开发框架。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/97779346?v=4">
+<title>Docker 搭建微信机器人</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-note {border-left-color:var(--borderColor-accent-emphasis, var(--color-accent-emphasis));background-color:var(--color-accent-subtle);}.markdown-alert.markdown-alert-note .markdown-alert-title {color: var(--fgColor-accent,var(--color-accent-fg));}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style><style>.markdown-alert.markdown-alert-important {border-left-color:var(--borderColor-done-emphasis, var(--color-done-emphasis));background-color:var(--color-done-subtle);}.markdown-alert.markdown-alert-important .markdown-alert-title {color: var(--fgColor-done,var(--color-done-fg));}</style><style>.markdown-alert.markdown-alert-warning {border-left-color:var(--borderColor-attention-emphasis, var(--color-attention-emphasis));background-color:var(--color-attention-subtle);}.markdown-alert.markdown-alert-warning .markdown-alert-title {color: var(--fgColor-attention,var(--color-attention-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Docker 搭建微信机器人</h1>
+<div class="title-right">
+    <a href="http://blog.lihe.site" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/lihetongxue/lihetongxue.github.io/issues/6" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>1. 什么是 AstrBot？</h2>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8ba23b6e25dba7dc5c0f3c9cd7ad3f57d55c9c9b2da687429b0148b30c003c03/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30332f363763356265393832636139622e706e67"><img src="https://camo.githubusercontent.com/8ba23b6e25dba7dc5c0f3c9cd7ad3f57d55c9c9b2da687429b0148b30c003c03/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30332f363763356265393832636139622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/03/67c5be982ca9b.png" style="max-width: 100%;"></a></p>
+<p>AstrBot 是一个易于上手的多平台聊天机器人及开发框架。通过它，你能够在多种消息平台上部署一个支持大语言模型（LLM）的聊天机器人。并以此实现但不限于 AI 知识库问答、角色扮演、群聊管理、LLM Agent 等功能。它有如下特性：</p>
+<ul>
+<li>
+<p><strong>松耦合：</strong> AstrBot 历经 3 次大代码重构。每一次都在向着松耦合、模块化的方向迈进。目前，AstrBot 采用了事件总线和消息事件流水线的架构设计，实现近乎完全的模块化。</p>
+</li>
+<li>
+<p><strong>异步：</strong> AstrBot 采用了异步编程模型，使得 AstrBot 在处理多个消息平台的消息时，能够更加高效。</p>
+</li>
+<li>
+<p><strong>多消息平台部署：</strong> AstrBot 默认支持接入 QQ、QQ频道、微信。通过插件，还可以接入 Telegram 等任何消息平台。</p>
+</li>
+<li>
+<p><strong>完善的插件系统：</strong> AstrBot 提供了完善、及其易于上手的插件系统，你可以通过插件实现自己的功能。开发一个插件，只需要几行代码。</p>
+</li>
+</ul>
+<h2>2. 它是如何实现的？</h2>
+<blockquote>
+<p>下面的拓扑图简述了 AstrBot 与插件、消息平台适配器、语言模型提供商、消息协议实现端的关系。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d3d0f73cbb5eeb6210e78729c8ce69473ed57f10fdc4599b8d5e431992fe7231/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30332f363763356331303536623766652e706e67"><img src="https://camo.githubusercontent.com/d3d0f73cbb5eeb6210e78729c8ce69473ed57f10fdc4599b8d5e431992fe7231/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30332f363763356331303536623766652e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/03/67c5c1056b7fe.png" style="max-width: 100%;"></a></p>
+<h2>3. 相关地址</h2>
+<p><strong>github地址：</strong> <a href="https://github.com/Soulter/AstrBot">http://github.com/Soulter/AstrBot</a></p>
+<p><strong>官网地址：</strong> <a href="https://astrbot.app/" rel="nofollow">https://astrbot.app/</a></p>
+<h2>4. 部署 AstrBot</h2>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>此教程默认使用服务器部署，服务器请自备，若需其他方式部署，可查看相关<a href="https://astrbot.app/deploy/astrbot/docker.html" rel="nofollow">文档</a></p>
+</div>
+<h3>4.1 通过 Docker-compose 部署</h3>
+<blockquote>
+<p>Docker及Docker-compose安装方法请移步<a href="https://blog.lihe.site/post/Docker-an-zhuang.html" rel="nofollow">Docker安装</a></p>
+</blockquote>
+<p><strong>首先，需要 Clone AstrBot 仓库到本地：</strong></p>
+<pre class="notranslate"><code class="notranslate">git clone https://github.com/Soulter/AstrBot
+cd AstrBot
+</code></pre>
+<p><strong>然后，运行 Compose：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker compose up -d
+</code></pre>
+<p><strong>查看 AstrBot 日志：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker-compose logs #当前目录下
+</code></pre>
+<h3>4.2 通过 Docker 部署</h3>
+<p><strong>创建目录并执行docker run：</strong></p>
+<pre class="notranslate"><code class="notranslate">mkdir astrbot
+docker run -itd -p 6180-6200:6180-6200 -p 11451:11451 -v $PWD/data:/AstrBot/data --name astrbot soulter/astrbot:latest
+</code></pre>
+<p><strong>查看 AstrBot 的日志：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker logs -f astrbot
+</code></pre>
+<h3>4.3 管理面板</h3>
+<blockquote>
+<p>AstrBot 管理面板具有管理插件、查看日志、可视化配置、查看统计信息等功能</p>
+</blockquote>
+<h4>4.3.1 访问管理面板</h4>
+<blockquote>
+<p>当启动 AstrBot 之后，你可以通过浏览器访问 <a href="http://%E6%9C%8D%E5%8A%A1%E5%99%A8IP:6185" rel="nofollow">http://服务器IP:6185</a> 来访问管理面板</p>
+</blockquote>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/eff31cb800ae240ca8d8df6e710f1c492e0addf6d57d3d0ace564de846021a2e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363734616337333736622e706e67"><img src="https://camo.githubusercontent.com/eff31cb800ae240ca8d8df6e710f1c492e0addf6d57d3d0ace564de846021a2e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363734616337333736622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c674ac7376b.png" style="max-width: 100%;"></a></p>
+<h4>4.3.2 登录</h4>
+<p>默认用户名和密码是 <code class="notranslate">astrbot</code> 和 <code class="notranslate">astrbot</code>，登录后可进行修改密码</p>
+<h4>4.3.3 可视化配置</h4>
+<blockquote>
+<p>在管理面板中，你可以通过可视化配置来配置 AstrBot 的插件。点击左栏 <code class="notranslate">配置</code> 即可进入配置页面</p>
+</blockquote>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ec9489b56d0ad70d0538e4ca43874605aebe8ec58adc384369f3e1ff2b127532/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363735376338316237622e706e67"><img src="https://camo.githubusercontent.com/ec9489b56d0ad70d0538e4ca43874605aebe8ec58adc384369f3e1ff2b127532/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363735376338316237622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6757c81b7b.png" style="max-width: 100%;"></a></p>
+<ul>
+<li>
+<p>顶部的两个按钮可以切换<code class="notranslate">可视化编辑配置</code>和<code class="notranslate">代码编辑配置</code></p>
+</li>
+<li>
+<p>在<code class="notranslate">可视化编辑配置</code>中，当修改完配置后，需要点击右下角保存按钮来保存配置</p>
+</li>
+<li>
+<p>在<code class="notranslate">代码编辑配置</code>中，你可以直接编辑配置文件，编辑完后首先点击<code class="notranslate">应用此配置</code>，此时配置将应用到可视化配置中，然后再点击右下角<code class="notranslate">保存</code>按钮来保存配置</p>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2a4bc2ec4f6201b06f412e37b37325f40780ba4997d42fbbda5c50483b33d8d5/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363736336133393636302e706e67"><img src="https://camo.githubusercontent.com/2a4bc2ec4f6201b06f412e37b37325f40780ba4997d42fbbda5c50483b33d8d5/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363736336133393636302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6763a39660.png" style="max-width: 100%;"></a></p>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p>请注意，当你在<code class="notranslate">代码编辑配置</code>中编辑配置文件时，如果你不点击<code class="notranslate">应用此配置</code>，那么你的修改将不会生效</p>
+</div>
+<h4>4.3.4 更新管理面板</h4>
+<ol>
+<li>
+<p>在 AstrBot 启动时，会自动检查管理面板是否需要更新，如果需要，第一条日志（黄色）会提示</p>
+</li>
+<li>
+<p>使用 <code class="notranslate">/dashboard_update</code> 命令可以手动更新管理面板（管理员指令）</p>
+</li>
+<li>
+<p>管理面板文件在 <code class="notranslate">data/dist</code> 目录下。如果需要手动替换，请在 <a href="https://github.com/Soulter/AstrBot/releases/">https://github.com/Soulter/AstrBot/releases/</a> 下载 dist.zip 然后解压到 data 目录下</p>
+</li>
+</ol>
+<h2>5. 部署消息平台</h2>
+<h3>5.1 通过 Gewechat 接入微信</h3>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ol>
+<li>这个接入方式不受微信官方支持，使用的是 <a href="https://github.com/Devo919/Gewechat">Devo919/Gewechat</a>。请注意风险。如果要使用官方支持的方式，&gt; 请使用企业微信的方式接入</li>
+<li>请控制聊天频率。如果过于频繁使用（同一时间发送消息次数过多），可能会导致更高的风控风险，请注意使用频率</li>
+</ol>
+</div>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<ol>
+<li>仅支持微信个人号</li>
+<li>微信限制，需要手动扫码登录</li>
+<li>微信限制一个微信号必须<strong>有一台手机在线</strong>才能登录其他端。而 Gewechat 是一个 IPAD 微信客户端。因此，你需要有一台手机登录该微信，才能使用 Gewechat</li>
+</ol>
+</div>
+<h4>5.1.1 部署 Gewechat</h4>
+<p><strong>拉取镜像：</strong></p>
+<pre class="notranslate"><code class="notranslate"> docker pull registry.cn-hangzhou.aliyuncs.com/gewe/gewe:latest
+ 
+ docker tag registry.cn-hangzhou.aliyuncs.com/gewe/gewe gewe
+</code></pre>
+<p><strong>运行容器：</strong></p>
+<pre class="notranslate"><code class="notranslate">mkdir -p /root/temp
+docker run -itd -v /root/temp:/root/temp -p 2531:2531 -p 2532:2532 --privileged=true --name=gewe gewe /usr/sbin/init
+</code></pre>
+<p><strong>设置开机自启：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker update --restart=always gewe
+</code></pre>
+<p><strong>查看日志：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker-compose logs
+</code></pre>
+<h4>5.1.2 在 AstrBot 中配置 Gewechat 适配器</h4>
+<p>在 AstrBot 的管理面板中，选择左边栏的 <strong>配置</strong>，然后在右边的界面中，点击 <strong>消息平台</strong> 选项卡。点击 <strong>+</strong> 号，选择 <strong>gewechat</strong>，会出现 gewechat 的相关配置项，如下图所示：</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/94cb07f1a92e5f781184f8507f694a4064fd344a0ed2c953139b9664c1b66df1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363661313465366535322e706e67"><img src="https://camo.githubusercontent.com/94cb07f1a92e5f781184f8507f694a4064fd344a0ed2c953139b9664c1b66df1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363661313465366535322e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c66a14e6e52.png" style="max-width: 100%;"></a></p>
+<ul>
+<li>
+<p><strong>nickname</strong> 请随便填一个具有辨识度的英文名,不需要是微信用户名</p>
+</li>
+<li>
+<p><strong>base_url</strong> 连接到 Gewechat 后端的 API 地址</p>
+</li>
+<li>
+<p><strong>host</strong> 回调地址主机，即 gewechat 下发事件到 AstrBot 的地址，同一个服务器则默认为localhost</p>
+</li>
+<li>
+<p><strong>port</strong> 回调地址端口，可不修改，默认11451</p>
+</li>
+</ul>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>对于 Linux 使用 Docker 部署 AstrBot 部署的用户，请通过 docker inspect gewe 查看 gewechat 容器网络的 IP 地址，然后<code class="notranslate">http://ip地址:2531</code>；如果有 公网ip，也可以是公网 ip，但是需要放行 2531 端口</p>
+</div>
+<h4>5.1.3 接入大模型服务</h4>
+<p>在<strong>管理面板</strong>-&gt;<strong>服务提供商</strong>-&gt;**+**<strong>新增服务提供商</strong> 处配置各种大语言模型服务</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67"><img src="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6723684470.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67"><img src="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c672f4096bf.png" style="max-width: 100%;"></a></p>
+<p>选择想要接入的大模型，例如<code class="notranslate">Deepseek</code>,填入获取的 <strong>API key</strong> 保存即可</p>
+<h4>5.1.4 扫码登录</h4>
+<p><strong>查看日志：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/84746169505ab24d14ceb6552b86ee243378fcf2c1a16983132cf0648d8b31d7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363665316537663233332e706e67"><img src="https://camo.githubusercontent.com/84746169505ab24d14ceb6552b86ee243378fcf2c1a16983132cf0648d8b31d7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363665316537663233332e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c66e1e7f233.png" style="max-width: 100%;"></a></p>
+<p>查看 AstrBot 的终端日志输出，会出现相关引导提示，打开提示的二维码链接扫码登录即可</p>
+<div class="markdown-alert markdown-alert-important"><p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p><p>如果扫码登录失败，可以将手机语言设置为英文，然后再次扫码即可登录</p>
+</div>
+<h4>5.1.5 食用方法</h4>
+<p><strong>查看日志确认登录成功：</strong></p>
+<p>在控制台查看日志，若登录成功，则会显示 <code class="notranslate">成功登录绿泡泡及回调信息等</code></p>
+<p><strong>在微信测试：</strong></p>
+<p>可以私发消息给机器人微信，如<code class="notranslate">/help</code>可以查看内置指令</p>
+<p>可将机器人加入群聊，通过<code class="notranslate">@机器人</code>可以进行唤醒对话，例如<code class="notranslate">@机器人 请帮我写一首关于爱情的诗</code></p>
+<p><strong>开启插件：</strong></p>
+<p>可以在管理面板的<strong>插件</strong>添加插件开启或禁止，插件的使用可以点击插件的<strong>帮助</strong>来查看使用方法</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67"><img src="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c670d489976.png" style="max-width: 100%;"></a></p>
+<h4>5.1.6 注意事项</h4>
+<p>一旦登录成功，请牢记在配置时配置的 username，如果更换，则相当于使用新设备登录。频繁新设备登录容易触发风控</p>
+<h2>6. 结尾</h2>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>觉得不错的可以去<a href="https://github.com/Soulter/AstrBot">Github</a>给项目点个<code class="notranslate">Star</code></p>
+</div>
+<p>在使用的过程中如果遇到问题，可以先自行查看文档，解决不了可以去<code class="notranslate">Github</code>提交issues</p>
+<p>更多的使用方法以及功能可以参考<a href="https://astrbot.app/what-is-astrbot.html" rel="nofollow">官网文档</a></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">转载请注明出处</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="http://blog.lihe.site">我不是Eric</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("06/29/2023"!=""){
+    var startSite=new Date("06/29/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/GmeekTOC.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>
+
+</html>

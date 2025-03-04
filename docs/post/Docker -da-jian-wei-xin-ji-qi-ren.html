@@ -117,7 +117,7 @@ body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;
 <p><strong>github地址：</strong> <a href="https://github.com/Soulter/AstrBot">http://github.com/Soulter/AstrBot</a></p>
 <p><strong>官网地址：</strong> <a href="https://astrbot.app/" rel="nofollow">https://astrbot.app/</a></p>
 <h2>4. 部署 AstrBot</h2>
-<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>此教程默认使用服务器部署，服务器请自备，若需其他方式部署，可查看相关<a href="https://astrbot.app/deploy/astrbot/docker.html" rel="nofollow">文档</a></p>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>此教程默认使用服务器部署，服务器请放行<code class="notranslate">6180-6200</code>和<code class="notranslate">11451</code>端口，若需其他方式部署，可查看相关<a href="https://astrbot.app/deploy/astrbot/docker.html" rel="nofollow">文档</a></p>
 </div>
 <h3>4.1 通过 Docker-compose 部署</h3>
 <blockquote>
@@ -215,7 +215,7 @@ docker run -itd -v /root/temp:/root/temp -p 2531:2531 -p 2532:2532 --privileged=
 <pre class="notranslate"><code class="notranslate">docker-compose logs
 </code></pre>
 <h4>5.1.2 在 AstrBot 中配置 Gewechat 适配器</h4>
-<p>在 AstrBot 的管理面板中，选择左边栏的 <strong>配置</strong>，然后在右边的界面中，点击 <strong>消息平台</strong> 选项卡。点击 <strong>+</strong> 号，选择 <strong>gewechat</strong>，会出现 gewechat 的相关配置项，如下图所示：</p>
+<p>在 AstrBot 的管理面板中，选择左边栏的 <strong>配置</strong>，然后在右边的界面中，点击 <strong>消息平台</strong> 选项卡。点击  <strong>+</strong> 号，选择 <strong>gewechat</strong>，会出现 gewechat 的相关配置项，如下图所示：</p>
 <p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/94cb07f1a92e5f781184f8507f694a4064fd344a0ed2c953139b9664c1b66df1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363661313465366535322e706e67"><img src="https://camo.githubusercontent.com/94cb07f1a92e5f781184f8507f694a4064fd344a0ed2c953139b9664c1b66df1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363661313465366535322e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c66a14e6e52.png" style="max-width: 100%;"></a></p>
 <ul>
 <li>

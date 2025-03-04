@@ -27,7 +27,7 @@ AstrBot 是一个易于上手的多平台聊天机器人及开发框架。通过
 ## 4. 部署 AstrBot
 
 > [!NOTE]
-> 此教程默认使用服务器部署，服务器请自备，若需其他方式部署，可查看相关[文档](https://astrbot.app/deploy/astrbot/docker.html)
+> 此教程默认使用服务器部署，服务器请放行`6180-6200`和`11451`端口，若需其他方式部署，可查看相关[文档](https://astrbot.app/deploy/astrbot/docker.html)
 
 ### 4.1 通过 Docker-compose 部署
 
@@ -150,7 +150,7 @@ docker-compose logs
 
 #### 5.1.2 在 AstrBot 中配置 Gewechat 适配器
 
-在 AstrBot 的管理面板中，选择左边栏的 **配置**，然后在右边的界面中，点击 **消息平台** 选项卡。点击 **+** 号，选择 **gewechat**，会出现 gewechat 的相关配置项，如下图所示：
+在 AstrBot 的管理面板中，选择左边栏的 **配置**，然后在右边的界面中，点击 **消息平台** 选项卡。点击  **+** 号，选择 **gewechat**，会出现 gewechat 的相关配置项，如下图所示：
 
 ![image](https://lihe.ink/2025/03/04/67c66a14e6e52.png)
 

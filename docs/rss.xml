@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/97779346?v=4</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Tue, 04 Mar 2025 06:18:34 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>Docker 搭建微信机器人</title><link>http://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html</link><description>## 1. 什么是 AstrBot？
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://avatars.githubusercontent.com/u/97779346?v=4</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Fri, 07 Mar 2025 06:43:47 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>Tessy 硬核使用教程</title><link>http://blog.lihe.site/post/Tessy%20-ying-he-shi-yong-jiao-cheng.html</link><description>## 0. Tessy 简介
+
+&gt; Tessy是一个专门针对嵌入式软件的C/C++代码进行单元、集成测试的工具，它可以自动化地执行测试、评估测试结果并生成测试报告
+
+在以V模型为例的开发模式中，Tessy主要应用在单元/模块测试，集成/组件测试。</description><guid isPermaLink="true">http://blog.lihe.site/post/Tessy%20-ying-he-shi-yong-jiao-cheng.html</guid><pubDate>Fri, 07 Mar 2025 06:43:13 +0000</pubDate></item><item><title>Docker 搭建微信机器人</title><link>http://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html</link><description>## 1. 什么是 AstrBot？
 
 ![image](https://lihe.ink/2025/03/03/67c5be982ca9b.png)
 

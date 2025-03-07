@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/97779346?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 0. Tessy 简介
+
+> Tessy是一个专门针对嵌入式软件的C/C++代码进行单元、集成测试的工具，它可以自动化地执行测试、评估测试结果并生成测试报告
+
+在以V模型为例的开发模式中，Tessy主要应用在单元/模块测试，集成/组件测试。">
+<meta property="og:title" content="Tessy 硬核使用教程">
+<meta property="og:description" content="## 0. Tessy 简介
+
+> Tessy是一个专门针对嵌入式软件的C/C++代码进行单元、集成测试的工具，它可以自动化地执行测试、评估测试结果并生成测试报告
+
+在以V模型为例的开发模式中，Tessy主要应用在单元/模块测试，集成/组件测试。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.lihe.site/post/Tessy%20-ying-he-shi-yong-jiao-cheng.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/97779346?v=4">
+<title>Tessy 硬核使用教程</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-note {border-left-color:var(--borderColor-accent-emphasis, var(--color-accent-emphasis));background-color:var(--color-accent-subtle);}.markdown-alert.markdown-alert-note .markdown-alert-title {color: var(--fgColor-accent,var(--color-accent-fg));}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style><style>.markdown-alert.markdown-alert-important {border-left-color:var(--borderColor-done-emphasis, var(--color-done-emphasis));background-color:var(--color-done-subtle);}.markdown-alert.markdown-alert-important .markdown-alert-title {color: var(--fgColor-done,var(--color-done-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Tessy 硬核使用教程</h1>
+<div class="title-right">
+    <a href="http://blog.lihe.site" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/lihetongxue/lihetongxue.github.io/issues/7" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>0. Tessy 简介</h2>
+<blockquote>
+<p>Tessy是一个专门针对嵌入式软件的C/C++代码进行单元、集成测试的工具，它可以自动化地执行测试、评估测试结果并生成测试报告</p>
+</blockquote>
+<p>在以V模型为例的开发模式中，Tessy主要应用在单元/模块测试，集成/组件测试。在V模型的开发模式中，单元测试是第一个动态测试活动。通过函数级测试，有效检查出每一类错误，比如算法错误、边界控制错误、数据溢出等。通过单元测试，可以尽可能早得发现Bug，防止到后面的测试过程或者到最终用户那里才被发现。在整个项目开发测试周期中，越早发现Bug越好，事实证明，开展详尽规范的单元测试能够有效减少系统测试和回归测试时间，降低开发成本</p>
+<p>另外，Tessy也可以满足各类标准（ISO26262、IEC 61508、 EN 50128/50129、 DO-178B、汽车SPiCE或FDA的软件验证通用原则）对测试的需求，比如ISO26262中各个测试等级中对模块测试的要求可以使用Tessy来满足，当然Tessy本身也通过了Tuev的认证，可以在安全相关性的软件研发过程中被使用</p>
+<h2>1. 新建工程</h2>
+<ul>
+<li><strong>启动Tessy，点击File选择New Project...新建工程</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b8d7c549538620028baddfe6ff29caca968449444f214db8543a9a3c0c35c162/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613638353163623364612e706e67"><img src="https://camo.githubusercontent.com/b8d7c549538620028baddfe6ff29caca968449444f214db8543a9a3c0c35c162/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613638353163623364612e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6851cb3da.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>在弹出的界面中输入工程名；Project Root中选择指定你的Tessy工程想要存放的路径；Source Root中勾选Enable source root，下面框中选择你的代码存放路径；其他选择默认就行；最后点击OK创建成功</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-important"><p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p><p>工程名以及相关路径不能包含中文字符和空格，否则报错</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d16375bd4f177db50cc974757fd4176d63aa9e585d193f755b40d89c712504cd/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613638636330653966652e706e67"><img src="https://camo.githubusercontent.com/d16375bd4f177db50cc974757fd4176d63aa9e585d193f755b40d89c712504cd/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613638636330653966652e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca68cc0e9fe.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>创建成功后，Tessy重启，首次会直接进入刚创建的工程，多个工程切换可以点击File选择Select Project选中你需要打开的工程</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2c84bf7114b7d28703db97ff424e627ce8671614f75f4232692211f9e2c233aa/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639333732663032362e706e67"><img src="https://camo.githubusercontent.com/2c84bf7114b7d28703db97ff424e627ce8671614f75f4232692211f9e2c233aa/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639333732663032362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca69372f026.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/6c525f414990b6cb5e09af62d3bf8874a264b0258f25ab936d006164073161f1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639353964336562302e706e67"><img src="https://camo.githubusercontent.com/6c525f414990b6cb5e09af62d3bf8874a264b0258f25ab936d006164073161f1/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639353964336562302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6959d3eb0.png" style="max-width: 100%;"></a></p>
+<h2>2. 导入源代码</h2>
+<ul>
+<li><strong>依次点击红框中三个图标，分别对应新建测试集、新建文件夹、新建模块；建议有规划的根据你的代码层级创建且名称具有意义</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b627378b7b0b0734ba93a7a83a20f68e438acbc0863397fb09505b0bf3fda3a8/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639376234376466662e706e67"><img src="https://camo.githubusercontent.com/b627378b7b0b0734ba93a7a83a20f68e438acbc0863397fb09505b0bf3fda3a8/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639376234376466662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca697b47dff.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/69f483cfce551be711e9fea866e574a7243ce4fd049dcca98544b68253bcde2a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639393839373430622e706e67"><img src="https://camo.githubusercontent.com/69f483cfce551be711e9fea866e574a7243ce4fd049dcca98544b68253bcde2a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639393839373430622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca69989740b.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>选中新建的模块，General配置如下，一般默认即可</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/a5a29d017ed9f00d8b9d5e4513cfaa84e72b7af0bf2e022ee57feb89411d974e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639623362666264342e706e67"><img src="https://camo.githubusercontent.com/a5a29d017ed9f00d8b9d5e4513cfaa84e72b7af0bf2e022ee57feb89411d974e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639623362666264342e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca69b3bfbd4.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>Source配置如下，添加需要测试的模块；添加头文件目录</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>强烈建议将项目代码中所有头文件存放在一个目录中，例如都存放在HHH目录中；此做法可避免大量的报错</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/bc4a9692e4dd002fcfea8a1742d315be90a15db2f15a540cafe2dd034cbfe618/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639636636646538372e706e67"><img src="https://camo.githubusercontent.com/bc4a9692e4dd002fcfea8a1742d315be90a15db2f15a540cafe2dd034cbfe618/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639636636646538372e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca69cf6de87.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>Coverage配置如下；点击红框部分选择覆盖类型，如语句覆盖ASIL B；接着点击Perferences配置如下图</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/faae15b4c350d093d9cfa6a7c75d6e862c9da72dfec1637344356a1dbeebaad3/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639666134656533652e706e67"><img src="https://camo.githubusercontent.com/faae15b4c350d093d9cfa6a7c75d6e862c9da72dfec1637344356a1dbeebaad3/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613639666134656533652e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca69fa4ee3e.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5ab2480efdbd18d87baec1203923b57d0aaf9406eda9d0b8016357d07253bab7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661313165663934302e706e67"><img src="https://camo.githubusercontent.com/5ab2480efdbd18d87baec1203923b57d0aaf9406eda9d0b8016357d07253bab7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661313165663934302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6a11ef940.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>点击下图其中一个红框进行编译分析</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5dfe37bc4551589f3b1de088048e042cb8852cb025ad51b4d80dbfef584b08e0/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661333932626131352e706e67"><img src="https://camo.githubusercontent.com/5dfe37bc4551589f3b1de088048e042cb8852cb025ad51b4d80dbfef584b08e0/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661333932626131352e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6a392ba15.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>待分析结束后，如果分析过程中出现报错，则需要进入控制台（软件右下角）进行问题分析并解决；再次进行编译分析直至成功分析完成</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>控制台中报error部分问题需要解决，warning部分可忽略不做处理，对工程无影响</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/28c41da6e27fef821bfa61814dc7e85128c9c49614f453302fee74c2e6d4d429/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661356136323236312e706e67"><img src="https://camo.githubusercontent.com/28c41da6e27fef821bfa61814dc7e85128c9c49614f453302fee74c2e6d4d429/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661356136323236312e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6a5a62261.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>如果编译分析无问题，则分析成功，模块的下拉列表会显示该模块中所有的函数</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/f1fdc0845bc66e31732054f267a5497805d5dec0e6227bd04e0a3d6ea9e647ee/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661373633396538612e706e67"><img src="https://camo.githubusercontent.com/f1fdc0845bc66e31732054f267a5497805d5dec0e6227bd04e0a3d6ea9e647ee/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661373633396538612e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6a7639e8a.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>小概率Tessy会生成一些自带的函数，需要屏蔽它们（图标变灰），如下图</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/eed7c1799924f8605ce076f0ee248bb36004f7cc231147a21dcd92e0637acfe3/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661393538376162342e706e67"><img src="https://camo.githubusercontent.com/eed7c1799924f8605ce076f0ee248bb36004f7cc231147a21dcd92e0637acfe3/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661393538376162342e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6a9587ab4.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/340be72872b34ba105b2d682ec3b7280f86517c401dda37e13cc79a1bd0e3bae/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661623838356464652e706e67"><img src="https://camo.githubusercontent.com/340be72872b34ba105b2d682ec3b7280f86517c401dda37e13cc79a1bd0e3bae/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661623838356464652e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6ab885dde.png" style="max-width: 100%;"></a></p>
+<h2>3. 界面介绍</h2>
+<blockquote>
+<p>一共有9个界面，每个界面对应了不同的工作区，如下图</p>
+</blockquote>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4a95a1cb2b5e96d4399c193082cd62858261993ea27976393a169f67f93e3835/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661643630333539392e706e67"><img src="https://camo.githubusercontent.com/4a95a1cb2b5e96d4399c193082cd62858261993ea27976393a169f67f93e3835/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661643630333539392e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6ad603599.png" style="max-width: 100%;"></a></p>
+<ol>
+<li>
+<p><strong>Requirement Mangement：</strong> 需求管理界面，目前不适用</p>
+</li>
+<li>
+<p><strong>Coverage Viewer：</strong> 代码覆盖情况查看界面</p>
+</li>
+<li>
+<p><strong>Overview：</strong> 全局界面</p>
+</li>
+<li>
+<p><strong>Test Interface Editor：</strong> 接口配置界面</p>
+</li>
+<li>
+<p><strong>Classification Tree Editor：</strong> 分类树界面（用于集成测试）</p>
+</li>
+<li>
+<p><strong>Test Data Editor：</strong> 用例设计界面</p>
+</li>
+<li>
+<p><strong>Scenario editor：</strong> 工具场景界面，目前不适用</p>
+</li>
+<li>
+<p><strong>Script Editor：</strong> 脚本编辑界面</p>
+</li>
+<li>
+<p><strong>Interface Data Assigner：</strong> 接口数据管理界面（用于回归测试及代码修改后）</p>
+</li>
+</ol>
+<h2>4. 接口配置处理</h2>
+<blockquote>
+<p>点击进入Test Interface Editor(TIE)界面，对函数接口进行配置，该界面会显示该函数的所有输入输出及函数接口</p>
+</blockquote>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/dea02bf25c2708df54d9fdbffbff36f95b2d7619fb46414b04034bb968850e55/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661666363363137622e706e67"><img src="https://camo.githubusercontent.com/dea02bf25c2708df54d9fdbffbff36f95b2d7619fb46414b04034bb968850e55/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613661666363363137622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6afcc617b.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>函数打桩；打桩后函数接口图标由空心变成蓝色实心</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-important"><p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p>
+<ol>
+<li>接口中所有函数都必须进行打桩，包括内部和外部所有的函数，并且未使用部分的External Functions中的函数也必须全部打桩，否则执行用例将会报错</li>
+<li>桩函数分为普通桩和高级桩，如果有高级桩的选项，必须打高级桩，只有普通桩则就打普通桩，否则执行用例时将报错</li>
+</ol>
+</div>
+<ul>
+<li><strong>变量接口处理；根据代码逻辑对变量接口进行配置为输入输出等</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>默认选择的接口配置有些会有出入，需要根据代码实际修改；一些不影响覆盖率的变量可以设置为不关心</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ea586f8010801a2015f5ea2fb44482fe1b1525245bfe69ea3077af536da8c418/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613662363830336534372e706e67"><img src="https://camo.githubusercontent.com/ea586f8010801a2015f5ea2fb44482fe1b1525245bfe69ea3077af536da8c418/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613662363830336534372e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6b6803e47.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>按Ctrl+S保存你的配置，或者点击其他界面时会提醒你是否保存</strong></li>
+</ul>
+<h2>5. 设计测试用例</h2>
+<blockquote>
+<p>点击Test Data Editor(TDE)界面，即可进行用例设计</p>
+</blockquote>
+<ul>
+<li><strong>新建测试用例</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/225a10a2e3920356e104cd299aa48e044fd10c45bf693a40c3296f58399e672a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613662656565623538392e706e67"><img src="https://camo.githubusercontent.com/225a10a2e3920356e104cd299aa48e044fd10c45bf693a40c3296f58399e672a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613662656565623538392e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6beeeb589.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>设计测试用例</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p>
+<ol>
+<li>用例设计应当结合源代码进行设计；用例步骤可单独执行测试，也可多步骤或多用例一起执行</li>
+<li>每条用例或步骤可整体复制粘贴，可以节省用例设计时间</li>
+<li>每条用例填写完后必须手动Ctrl+S进行保存，图标将由灰色变为黄色</li>
+</ol>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/d9aa3458f44b92bf5f198969a9f750def1ea5c9050ad27938778f830abdb4faf/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663306334323235392e706e67"><img src="https://camo.githubusercontent.com/d9aa3458f44b92bf5f198969a9f750def1ea5c9050ad27938778f830abdb4faf/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663306334323235392e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6c0c42259.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>执行测试用例；如图Ctrl+A选中所有需要执行的用例后，点击红框中的绿色三角形执行测试</strong></li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8968f225fe517fd3f90106a562f273d03a2ef87c6ac33a400a9f90d0bc69a823/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663326663336339342e706e67"><img src="https://camo.githubusercontent.com/8968f225fe517fd3f90106a562f273d03a2ef87c6ac33a400a9f90d0bc69a823/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663326663336339342e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6c2fc3c94.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>输出与实际值；如果输出和预期值不一致，则需要改成实际值，可一键更改</strong></li>
+</ul>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>由于可以一键更改实际值，我们设计用例时可只设计输入，输出则可为任意值</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/51f8ce2d1b5aa781e7403aff7a841fed5a2d58ccc8569e506614dadb7536db84/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663346565383435302e706e67"><img src="https://camo.githubusercontent.com/51f8ce2d1b5aa781e7403aff7a841fed5a2d58ccc8569e506614dadb7536db84/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663346565383435302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6c4ee8450.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/8527fa21472c82d66aa74a9c08c480d2db6453d5983533e3360ff926fcc17ba7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663373233356332332e706e67"><img src="https://camo.githubusercontent.com/8527fa21472c82d66aa74a9c08c480d2db6453d5983533e3360ff926fcc17ba7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663373233356332332e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6c7235c23.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>查看覆盖度情况</strong></li>
+</ul>
+<blockquote>
+<p>点击Coverage Viewer(CV)界面查看覆盖情况</p>
+<p>点击流程图中的任意节点和路径即可看到源代码及覆盖情况</p>
+</blockquote>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>在设计用例时，利用这个界面了解未覆盖部分情况可代码，能够大大提高测试效率</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b74ffa9055492502f42e649e3e8e60068c66eaa770aee36288739237129963bf/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663393965356465642e706e67"><img src="https://camo.githubusercontent.com/b74ffa9055492502f42e649e3e8e60068c66eaa770aee36288739237129963bf/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663393965356465642e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6c99e5ded.png" style="max-width: 100%;"></a></p>
+<h2>6. 生成报告</h2>
+<blockquote>
+<p><strong>按照下图生成并导出测试报告</strong></p>
+</blockquote>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>报告只选取PDF文件，其中包含一个Overview report和若干个Detail report</p>
+</div>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b09e7d37b27d27d1b67e1e95b2158edc5dcd403bcc1abce8b989eaedcc16f37e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663643135656433612e706e67"><img src="https://camo.githubusercontent.com/b09e7d37b27d27d1b67e1e95b2158edc5dcd403bcc1abce8b989eaedcc16f37e/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613663643135656433612e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6cd15ed3a.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/caf1b5f3eebfd5879114eadbaf0ab9860aaa1db4f25b2d6b09327d0cd96fa107/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613664303164393535632e706e67"><img src="https://camo.githubusercontent.com/caf1b5f3eebfd5879114eadbaf0ab9860aaa1db4f25b2d6b09327d0cd96fa107/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30372f363763613664303164393535632e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/07/67ca6d01d955c.png" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>Overview report；报告总览</strong></li>
+</ul>
+<p><a href="https://qtiu5p27dc.feishu.cn/drive/folder/CXyUfKKumlxApcd4oAZcqrTTnoc?from=from%5C_copylink" rel="nofollow">https://qtiu5p27dc.feishu.cn/drive/folder/CXyUfKKumlxApcd4oAZcqrTTnoc?from=from\_copylink</a></p>
+<ul>
+<li><strong>Detail report；详细报告</strong></li>
+</ul>
+<p><a href="https://qtiu5p27dc.feishu.cn/drive/folder/W0RUfsgRIldNYIdgsdcc7IylnMd?from=from%5C_copylink" rel="nofollow">https://qtiu5p27dc.feishu.cn/drive/folder/W0RUfsgRIldNYIdgsdcc7IylnMd?from=from\_copylink</a></p>
+<h2>7. 问题处理与操作</h2>
+<blockquote>
+<p>导入工程后，在编译分析阶段、用例执行阶段两个阶段过程中，每个项目都大概率会出现一些问题；然而花费时间的地方正是这些地方，所以针对某个项目或者兄弟项目时，解决这些问题可以让我们一劳永逸；这里列出一些常见的问题类型，并提供解决思路</p>
+</blockquote>
+<ul>
+<li><strong>开始之前</strong></li>
+</ul>
+<ol>
+<li>
+<p>在开始导入代码前，先将工程代码中所有的#error替换成//#error屏蔽掉</p>
+</li>
+<li>
+<p>将所有头文件提取并放在一个文件夹中</p>
+</li>
+</ol>
+<ul>
+<li><strong>编译分析阶段</strong></li>
+</ul>
+<ol>
+<li>出现头文件找不到的情况，报错为No such file or directory xxx.h</li>
+</ol>
+<p>这种情况大概率为头文件未包含或者重复包含，检查头文件是否存在，如果未包含则需要将头文件放置到报错的文件中（C文件或者调用的头文件）</p>
+<ul>
+<li>出现变量找不到的情况，报错为某某变量未定义等</li>
+</ul>
+<p>这种情况就是头文件的问题，将变量源头所在的头文件找到并添加到测试的C代码文件中</p>
+<ul>
+<li>出现__builtin_va_end和__builtin_va_start相关的底层编译器相关的报错</li>
+</ul>
+<p>在Tessy环境配置中添加编译器自定义命令(谨慎操作)：__builtin_va_start=;__builtin_va_end(ap)=((void)0) </p>
+<ul>
+<li>出现其他情况等（还会遇到很多问题）</li>
+</ul>
+<p>根据控制台报错信息针对处理，一条一条解决</p>
+<ul>
+<li><strong>执行用例阶段</strong></li>
+</ul>
+<ol>
+<li>出现Unable to rececive block size这个问题</li>
+</ol>
+<p>该问题为指针引起，第一个原因是在设计测试用例过程中，未将指针变量设置为动态类型，第二个原因不可避免，这个时候将代码中包含指针的语句进行屏蔽，则可完美解决</p>
+<ul>
+<li>出现Const变量作为输入时，会因为常量无法改变报错</li>
+</ul>
+<p>这个问题有两种解决方法，第一种最简单的就是将const去掉暂时解决执行过程，第二种方法可以配置Tessy环境，将Const变量设置为可作为输入（谨慎操作）</p>
+<ul>
+<li>并未出现语法上的报错，报错信息很少（不作举例）</li>
+</ul>
+<p>这个时候大概率是由于忘记打桩或者没打高级桩，或者TIE界面中接口为Unknow</p>
+<ul>
+<li>测试技巧</li>
+</ul>
+<p>如果花费大量时间仍然没有解决一些问题，可以针对报错部分进行屏蔽，即哪里报错屏蔽哪里（前提不影响大的方向下）</p></div>
+<div style="font-size:small;margin-top:8px;float:right;">转载请注明出处</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="http://blog.lihe.site">我不是Eric</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("06/29/2023"!=""){
+    var startSite=new Date("06/29/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>
+
+</html>

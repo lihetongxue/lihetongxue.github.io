@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script>
+    <link rel="icon" href="https://avatars.githubusercontent.com/u/97779346?v=4"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 1. Perf工具介绍
+
+Perf是一个非常实用且深入的性能分析工具，适用于从底层硬件交互到上层应用程序逻辑的全方位性能剖析
+
+该工具的设计目的是为了帮助开发者分析应用程序以及内核本身的性能，寻找潜在的性能瓶颈，并根据此进行性能的优化
+
+## 2. Perf工具原理
+
+> [!NOTE]
+> Perf工具的原理的核心在于对Linux内核性能事件的支持和利用
+
+1. **硬件事件：**
+
+perf 能够利用CPU内部的 Performance Monitoring Units (PMUs)。">
+<meta property="og:title" content="Perf 性能分析">
+<meta property="og:description" content="## 1. Perf工具介绍
+
+Perf是一个非常实用且深入的性能分析工具，适用于从底层硬件交互到上层应用程序逻辑的全方位性能剖析
+
+该工具的设计目的是为了帮助开发者分析应用程序以及内核本身的性能，寻找潜在的性能瓶颈，并根据此进行性能的优化
+
+## 2. Perf工具原理
+
+> [!NOTE]
+> Perf工具的原理的核心在于对Linux内核性能事件的支持和利用
+
+1. **硬件事件：**
+
+perf 能够利用CPU内部的 Performance Monitoring Units (PMUs)。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.lihe.site/post/Perf%20-xing-neng-fen-xi.html">
+<meta property="og:image" content="https://avatars.githubusercontent.com/u/97779346?v=4">
+<title>Perf 性能分析</title>
+
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-note {border-left-color:var(--borderColor-accent-emphasis, var(--color-accent-emphasis));background-color:var(--color-accent-subtle);}.markdown-alert.markdown-alert-note .markdown-alert-title {color: var(--fgColor-accent,var(--color-accent-fg));}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style><style>.markdown-alert.markdown-alert-important {border-left-color:var(--borderColor-done-emphasis, var(--color-done-emphasis));background-color:var(--color-done-subtle);}.markdown-alert.markdown-alert-important .markdown-alert-title {color: var(--fgColor-done,var(--color-done-fg));}</style><style>.markdown-alert.markdown-alert-warning {border-left-color:var(--borderColor-attention-emphasis, var(--color-attention-emphasis));background-color:var(--color-attention-subtle);}.markdown-alert.markdown-alert-warning .markdown-alert-title {color: var(--fgColor-attention,var(--color-attention-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Perf 性能分析</h1>
+<div class="title-right">
+    <a href="http://blog.lihe.site" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/lihetongxue/lihetongxue.github.io/issues/8" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>1. Perf工具介绍</h2>
+<p>Perf是一个非常实用且深入的性能分析工具，适用于从底层硬件交互到上层应用程序逻辑的全方位性能剖析</p>
+<p>该工具的设计目的是为了帮助开发者分析应用程序以及内核本身的性能，寻找潜在的性能瓶颈，并根据此进行性能的优化</p>
+<h2>2. Perf工具原理</h2>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>Perf工具的原理的核心在于对Linux内核性能事件的支持和利用</p>
+</div>
+<ol>
+<li><strong>硬件事件：</strong></li>
+</ol>
+<p>perf 能够利用CPU内部的 Performance Monitoring Units (PMUs)。PMUs是一组硬件寄存器，能够追踪和记录特定的微架构事件，如指令执行次数、缓存未命中、分支预测失败等。通过编程这些寄存器，perf可以设置特定事件的阈值，在达到一定次数后触发中断，收集此时的上下文信息，如CPU寄存器状态、PC指针（指向当前正在执行的指令地址）、进程ID、线程ID等</p>
+<ol start="2">
+<li><strong>软件事件：</strong></li>
+</ol>
+<p>对于软件级别的事件，perf 利用内核中的计数器和 tracepoints。内核计数器可以追踪系统级事件，如上下文切换、页错误、任务调度等。Tracepoints 是内核中预定义的静态探针点，允许在特定位置插入额外的追踪代码，以便在关键内核操作发生时收集信息。对于软件级别的事件，perf 利用内核中的计数器和 tracepoints。内核计数器可以追踪系统级事件，如上下文切换、页错误、任务调度等。Tracepoints 是内核中预定义的静态探针点，允许在特定位置插入额外的追踪代码，以便在关键内核操作发生时收集信息</p>
+<ol start="3">
+<li><strong>采样：</strong></li>
+</ol>
+<p>perf 工具主要采用采样法进行性能分析。它可以根据设置的事件类型和频率定期或者在满足条件时触发采样，每次采样都会记录下当时CPU正在执行的指令或函数信息。通过大量的采样数据，可以得出热点函数或代码段，从而找出可能导致性能瓶颈的部分</p>
+<ol start="4">
+<li><strong>记录和报告：</strong></li>
+</ol>
+<p>perf 可以实时或事后分析记录的数据。它可以创建统计数据报告，展示CPU使用率、上下文切换、内存访问统计等信息，还可以生成调用图（火焰图）以直观地显示函数调用层级和耗时情况</p>
+<ol start="5">
+<li><strong>跟踪：</strong></li>
+</ol>
+<p>除了采样之外，perf 还提供了更复杂的跟踪能力，允许持续记录系统的活动，包括系统调用、函数入口退出、irq处理等，这对于分析系统行为和优化系统响应时间非常有用</p>
+<h2>3. perf常用命令</h2>
+<p><strong>最常用的perf命令及其功能理解如下：</strong></p>
+<pre class="notranslate"><code class="notranslate">   annotate        读取perf.data（由perf record生成）并结合源代码展示详细的性能分析结果，包括CPU执行热点、函数调用栈等信息。
+   archive         使用perf.data文件中找到的带构建标识符的对象文件创建归档文件，便于后续对这些对象文件进行调试或者分析
+   bench           通用基准测试套件框架，允许用户定义和运行多种基准测试场景，用于评估系统在不同条件下的性能表现。
+   buildid-cache   管理perf用来关联二进制文件与其符号表信息的构建ID缓存，可以添加、删除或查看缓存内容。
+   buildid-list    列出perf.data文件中的构建标识符
+   c2c             共享数据C2C/HITM分析器：针对共享数据缓存一致性（Cache-to-Cache）和高速缓存命中（Hit in Translation）进行分析的工具，帮助诊断多核心间的缓存交互问题。
+   config          读取和设置perf配置文件中的变量，用于个性化perf的行为或指定默认参数。
+   daemon          在后台运行记录会话，适用于长期监控系统的性能情况。
+   data            提供一系列与perf.data文件相关联的操作，如检查文件内容、转换格式等。
+   diff            比较两个或多个perf.data文件，分析并展示它们之间的性能差异，常用于对比不同条件下系统的性能变化。
+   evlist          列出perf.data文件中的事件名称，这些事件可能包括硬件性能计数器事件、软件事件、tracepoint事件等。
+   ftrace          内核ftrace功能的简单包装器，允许实时追踪和分析内核函数调用路径。
+   inject          过滤器，用于向事件流中添加附加信息，增强事件的数据量和丰富度，便于更加深入地分析性能问题
+   iostat          显示I/O性能指标，如块设备读写速率、I/O操作延时等
+   kallsyms        在运行中的内核中搜索符号
+   kmem            用于跟踪/测量内核内存属性的工具，如分配、释放、碎片率等
+   kvm             用于跟踪/测量KVM虚拟机操作系统性能的工具
+   list            列出所有符号事件类型
+   lock            分析系统中锁的获取和释放行为，包括锁竞争、等待时间等，有助于发现潜在的并发瓶颈
+   mem             对内存访问模式进行分析，包括页错误、缓存未命中的次数、内存带宽使用等。
+   record          执行命令并将其性能概要记录到perf.data中
+   report          读取perf.data（由perf record创建）并显示概要
+   sched           用于跟踪/测量调度器属性（延迟）的工具，从而优化进程调度策略。
+   script          读取perf.data（由perf record创建）并显示跟踪输出
+   stat            执行命令并收集性能计数器统计信息
+   test            运行内置的一系列sanity测试，确保perf工具自身正确性和稳定性。
+   timechart       工具用于可视化工作负载期间的系统整体行为
+   top             系统性能分析工具，类似于Linux的top命令，但专注于性能分析，显示正在运行进程的实时性能统计数据。
+   version         显示perf二进制文件的版本信息
+   probe           定义新的动态跟踪点，使得perf能够追踪和记录自定义的内核函数或模块行为。
+   trace           类似strace的工具，用于跟踪系统调用和信号
+</code></pre>
+<h2>4. 安装指南</h2>
+<blockquote>
+<p>以Ubuntu 20.04为例：</p>
+</blockquote>
+<p>终端输入：</p>
+<pre class="notranslate"><code class="notranslate">$ sudo apt-get update
+$ sudo apt-get install linux-tools-common linux-tools-$(uname -r)
+</code></pre>
+<p>验证：</p>
+<pre class="notranslate"><code class="notranslate">$ perf --version
+</code></pre>
+<p>输出版本信息则安装成功：</p>
+<pre class="notranslate"><code class="notranslate">perf version 6.8.12
+</code></pre>
+<h2>5. Perf的使用</h2>
+<h3>5.1 查看perf支持的监控event：</h3>
+<pre class="notranslate"><code class="notranslate">$ sudo perf list
+
+List of pre-defined events (to be used in -e or -M):
+
+  alignment-faults                                   [Software event]
+  bpf-output                                         [Software event]
+  cgroup-switches                                    [Software event]
+  context-switches OR cs                             [Software event]
+  cpu-clock                                          [Software event]
+  cpu-migrations OR migrations                       [Software event]
+  dummy                                              [Software event]
+  emulation-faults                                   [Software event]
+  major-faults                                       [Software event]
+  minor-faults                                       [Software event]
+  page-faults OR faults                              [Software event]
+  task-clock                                         [Software event]
+  duration_time                                      [Tool event]
+  user_time                                          [Tool event]
+  system_time                                        [Tool event]
+
+cpu_atom:
+  L1-dcache-loads OR cpu_atom/L1-dcache-loads/
+  L1-dcache-load-misses OR cpu_atom/L1-dcache-load-misses/
+  L1-dcache-stores OR cpu_atom/L1-dcache-stores/
+  L1-icache-load-misses OR cpu_atom/L1-icache-load-misses/
+  dTLB-loads OR cpu_atom/dTLB-loads/
+</code></pre>
+<h3>5.2 使用perf stat查看程序运行过程中各种event的统计：</h3>
+<p><strong>命令格式：</strong></p>
+<pre class="notranslate"><code class="notranslate">perf stat [options] [&lt;command&gt;]
+</code></pre>
+<blockquote>
+<p> 以test程序为例，test是test.c文件编译后的可执行文件</p>
+</blockquote>
+<pre class="notranslate"><code class="notranslate">$ sudo perf stat -a -e cpu-clock ./test  # 使用 CPU 时钟事件
+
+ Performance counter stats for 'system wide':
+
+         31,484.33 msec cpu-clock                        #    8.000 CPUs utilized             
+
+       3.935464050 seconds time elapsed
+
+</code></pre>
+<p>如上所示，统计了CPU 时钟事件在程序运行过程中的计数，可以使用-e选项来自定义使用的event</p>
+<h3>5.3 使用perf record和perf report命令来进行更详细的分析：</h3>
+<div class="markdown-alert markdown-alert-important"><p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p><p>perf stat命令只能记录event发生的次数，perf record在此基础之上可以记录event发生时详细的数据(比如IP、堆栈等等)。可以自定义需要记录的event，可以自定义记录数据的格式</p>
+</div>
+<p><strong>命令格式：</strong></p>
+<pre class="notranslate"><code class="notranslate">perf record [options] [command]
+perf report [-i perf.data] [options]
+</code></pre>
+<p><strong>实测如下(以test程序为例)：</strong></p>
+<pre class="notranslate"><code class="notranslate">$ sudo perf record -g -F 99 ./test
+$ sudo perf report -g -i perf.data # 查看报告
+
+Samples: 1  of event 'task-clock:ppp', Event count (approx.): 10101010
+  Children      Self  Command  Shared Object      Symbol
++  100.00%   100.00%  test     [kernel.kallsyms]  [k] queue_work_on                                             
++  100.00%     0.00%  test     libc.so.6          [.] __GI___libc_write                                         
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] entry_SYSCALL_64_after_hwframe                            
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] do_syscall_64                                             
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] x64_sys_call                                              
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] __x64_sys_write                                           
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] ksys_write                                                
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] vfs_write                                                 
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] tty_write                                                 
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] file_tty_write.constprop.0                                
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] iterate_tty_write                                         
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] n_tty_write                                               
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] process_output_block                                      
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] pty_write                                                 
++  100.00%     0.00%  test     [kernel.kallsyms]  [k] tty_insert_flip_string_and_push_buffer
+</code></pre>
+<ul>
+<li>
+<p>perf record默认只使用了1种event cpu-clock，cpu-clock使用的是高精度定时器来进行定时采样</p>
+</li>
+<li>
+<p>-F 99选项指定了采样频率99HZ</p>
+</li>
+<li>
+<p>-g选项指定了输出数据中包含调用堆栈</p>
+</li>
+<li>
+<p>perf record默认数据输出文件为perf.data</p>
+</li>
+</ul>
+<h2>6. 火焰图</h2>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>火焰图是用图形化的方式来展现perf等工具采集的性能数据，对数据进行统计和分析，方便找出性能热点</p>
+</div>
+<p><strong>火焰图的特点如下：</strong></p>
+<ul>
+<li>
+<p><strong>可视化堆栈跟踪：</strong> 火焰图将多个堆栈跟踪（stack traces）合并在一起，形成一个层次分明的图表。每个函数调用形成一个矩形，宽度表示函数在CPU上执行的时间占比，高度表示函数调用的层级</p>
+</li>
+<li>
+<p><strong>直观揭示性能瓶颈：</strong> 通过观察火焰图，可以直观地看到哪些函数在执行过程中占据了大量的CPU时间，从而快速定位潜在的性能瓶颈</p>
+</li>
+<li>
+<p><strong>排序方式：</strong> x轴通常按照函数名称字母顺序排列，而不是时间顺序。这样做的好处是可以很容易地对比相似函数在整个程序中的开销</p>
+</li>
+<li>
+<p><strong>颜色编码：</strong> 图中的每个矩形（或称“火焰条”）通常使用随机颜色，目的是在视觉上更容易区分相邻的函数调用。有些变种火焰图可能会采用不同的颜色方案来区分不同的代码区域或模块</p>
+</li>
+<li>
+<p><strong>分析数据来源：</strong> 火焰图的数据来源于性能分析工具（如Linux中的perf工具）收集的CPU采样数据，或者是通过其他性能分析手段得到的调用栈信息</p>
+</li>
+<li>
+<p><strong>应用领域：</strong> 火焰图广泛应用于性能优化、故障排查、代码重构等领域，尤其适合大型复杂软件系统，有助于工程师们快速理解和改进程序性能</p>
+</li>
+</ul>
+<h3>6.1 下载火焰图工具</h3>
+<pre class="notranslate"><code class="notranslate">$ git clone https://github.com/brendangregg/FlameGraph.git
+</code></pre>
+<h3>6.2 生成火焰图</h3>
+<blockquote>
+<p>下面是一个实际例子(以test程序为例)，我们首先用perf record抓取perf数据，再使用脚本生成火焰图：</p>
+</blockquote>
+<pre class="notranslate"><code class="notranslate">$ sudo perf record -g -F 99 -- ./test
+$ sudo perf script -i perf.data &gt; out.perf
+$ /home/lihe/github/FlameGraph/stackcollapse-perf.pl out.perf &gt; out.floded
+$ /home/lihe/github/FlameGraph/flamegraph.pl out.floded &gt; test.svg 
+</code></pre>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>/home/lihe/github/FlameGraph/ 为火焰图工具绝对路径</p>
+</div>
+<h4>6.3 查看火焰图</h4>
+<p><strong>可以看到目录下生成了test.svg文件：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2f41da9699405b43d59ec77c4d4ad0aec2e58161f3e81f436fe6726c357b1688/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432323530613339632e706e67"><img src="https://camo.githubusercontent.com/2f41da9699405b43d59ec77c4d4ad0aec2e58161f3e81f436fe6726c357b1688/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432323530613339632e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/11/67cfd2250a39c.png" style="max-width: 100%;"></a></p>
+<p><strong>打开test.svg：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/b7be72a703201c6ef2016356ea1a06c423239a3dfcfac0880f5a2fd8444548ba/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432336366333235352e706e67"><img src="https://camo.githubusercontent.com/b7be72a703201c6ef2016356ea1a06c423239a3dfcfac0880f5a2fd8444548ba/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432336366333235352e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/11/67cfd23cf3255.png" style="max-width: 100%;"></a></p>
+<div class="markdown-alert markdown-alert-important"><p class="markdown-alert-title"><svg class="octicon octicon-report mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v9.5A1.75 1.75 0 0 1 14.25 13H8.06l-2.573 2.573A1.458 1.458 0 0 1 3 14.543V13H1.75A1.75 1.75 0 0 1 0 11.25Zm1.75-.25a.25.25 0 0 0-.25.25v9.5c0 .138.112.25.25.25h2a.75.75 0 0 1 .75.75v2.19l2.72-2.72a.749.749 0 0 1 .53-.22h6.5a.25.25 0 0 0 .25-.25v-9.5a.25.25 0 0 0-.25-.25Zm7 2.25v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 9a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Important</p><p>火焰图中的每一个方框是一个函数，方框的长度，代表了它的执行时间，所以越宽的函数，执行越久。火焰图的楼层每高一层，就是更深一级的函数被调用，最顶层的函数，是叶子函数</p>
+</div>
+<h4>6.4 火焰图的含义</h4>
+<ul>
+<li>
+<p>火焰图是基于 stack 信息生成的 SVG 图片, 用来展示 CPU 的调用栈</p>
+</li>
+<li>
+<p>y 轴表示调用栈, 每一层都是一个函数. 调用栈越深, 火焰就越高, 顶部就是正在执行的函数, 下方都是它的父函数.</p>
+</li>
+<li>
+<p>x 轴表示该函数执行消耗的时间，横向上会按照字母顺序排序，而且如果是同样的调用会做合并（注意：如果一个函数在 X 轴占据的宽度越宽，就表示它被抽到的次数多，即执行的时间长，所以这里不是严格意义上的执行消耗的时间），所以一个横向宽度越大的函数调用，一般很可能是程序的瓶颈。</p>
+</li>
+<li>
+<p>火焰图的颜色是随机分配的，并不是颜色越深就是越瓶颈。因为火焰图表示的是 CPU 的繁忙程度，所以一般都是暖色调。我们需要留意的就是那些比较宽大的火苗。只要有"平顶"，就表示该函数可能存在性能问题。</p>
+</li>
+</ul>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>对于正在运行的程序 可以直接使用 pert stat -p pid 或者perf record -g -e cpu-clock -pid生成perf.data数据用于分析</p>
+</div>
+<h4>6.5 生成红蓝差分火焰图</h4>
+<blockquote>
+<p>在某些情况下我们关心的是加上某项功能后，性能的对比情况。这种情况下需要用到差分火焰图来进行分析：</p>
+</blockquote>
+<p><strong>对test程序进行优化后的test1程序进行生成火焰图，并生成红蓝差分火焰图：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4de530cc7ae690f31ff5d441bda2e3312817cb2503003d12943e91e8f34e2cb8/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432633632326561662e706e67"><img src="https://camo.githubusercontent.com/4de530cc7ae690f31ff5d441bda2e3312817cb2503003d12943e91e8f34e2cb8/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432633632326561662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/11/67cfd2c622eaf.png" style="max-width: 100%;"></a></p>
+<p><strong>test1程序火焰图test1.svg：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/f92853f2de08b03668e9909d6ba85e75e7decbb893503dd888798cb958924b9c/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432646633366462362e706e67"><img src="https://camo.githubusercontent.com/f92853f2de08b03668e9909d6ba85e75e7decbb893503dd888798cb958924b9c/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432646633366462362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/11/67cfd2df36db6.png" style="max-width: 100%;"></a></p>
+<p><strong>红蓝差分火焰图diff1.svg：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/7fd89814d33afb96012deaf6b54b8cca8a732d916915fe2d53947e2608deada7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432663738396338622e706e67"><img src="https://camo.githubusercontent.com/7fd89814d33afb96012deaf6b54b8cca8a732d916915fe2d53947e2608deada7/68747470733a2f2f6c6968652e696e6b2f323032352f30332f31312f363763666432663738396338622e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/11/67cfd2f789c8b.png" style="max-width: 100%;"></a></p>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>在红/蓝差分火焰图中, 使用不同的颜色来表示两个文件中的差异部分。红色表示增长, 蓝色表示衰减（图中没有红色）</p>
+</div>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p>虽然红/蓝差分火焰图很有用, 但实际上还是有一个问题 : 如果一个代码执行路径完全消失了, 那么在火焰图中就找不到地方来标注蓝色. 你只能看到当前的 CPU 使用情况, 而不知道为什么会变成这样.一个办法是, 将对比顺序颠倒, 画一个相反的差分火焰图</p>
+</div>
+<h4>6.6 oncpu/offcpu</h4>
+<p>以上都是on-cpu火焰图，理解了系统的CPU的走向的分析。但是，很多时候，单纯地看on-cpu的情况（什么代码在耗费CPU），并不能解决性能问题，因为有时候性能差的原因瓶颈不一定在CPU上面，而是在off-cpu的时间，比如：</p>
+<ul>
+<li>
+<p>进程进入系统调用执行io动作，io动作的延迟</p>
+</li>
+<li>
+<p>进程等待mutex锁的时间</p>
+</li>
+<li>
+<p>内存被交换,swap的时间</p>
+</li>
+<li>
+<p>内存不够的时候，执行直接内存回收的时间</p>
+</li>
+<li>
+<p>进程被抢占调度走、或者时间片用完被调度走的时间(runqueue太大)</p>
+</li>
+</ul>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>这一类数据使用bpfcc-tools来采样，具体使用可以参考：用off-cpu火焰图进行Linux性能分析（查阅资料）</p>
+</div></div>
+<div style="font-size:small;margin-top:8px;float:right;">转载请注明出处</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="http://blog.lihe.site">我不是Eric</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("06/29/2023"!=""){
+    var startSite=new Date("06/29/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>
+
+</html>

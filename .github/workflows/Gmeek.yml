@@ -54,7 +54,11 @@ jobs:
           cp -a /opt/Gmeek/docs ${{ github.workspace }} 
           cp -a /opt/Gmeek/backup ${{ github.workspace }} 
           cp /opt/Gmeek/blogBase.json ${{ github.workspace }} 
-          
+
+      - name: cp file
+        run: |
+          cp baidu_verify_codeva-mAdMBqqRyh.html docs/
+
       - name: update html
         run: |
           git config --local user.email "$(jq -r ".email" config.json)"

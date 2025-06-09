@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark_colorblind" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    <script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script><meta name='google-site-verification' content='fk5myH_Q725YO5cL2JrFYUukmGg-owc8NSCjbjK7c1Y' /><script async src='https://www.googletagmanager.com/gtag/js?id=G-xxxxx'></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-xxxxxx');</script>
+    <link rel="icon" href="https://blog.lihe.site/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="## 前言
+
+> 由于 Gewechat 项目不再维护及可用，现采用 WeChatPadPro 方法替代
+
+之前介绍的 [Docker 搭建微信机器人](https://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html) 教程现将微信接入方式更新为 WeChatPadPro，替换标题 5 的内容，其他部分不变
+
+## 5. 部署消息平台
+
+### 5.1 通过 WeChatPadPro 接入微信
+
+> [!NOTE]
+> 1. 需要 AstrBot 版本 >= 3.5.10
+> 2. 这个接入方式不受微信官方支持，使用的是 [WeChatPadPro](https://github.com/luolin-ai/WeChatPadPro)。">
+<meta property="og:title" content="【更新】Docker 搭建微信机器人">
+<meta property="og:description" content="## 前言
+
+> 由于 Gewechat 项目不再维护及可用，现采用 WeChatPadPro 方法替代
+
+之前介绍的 [Docker 搭建微信机器人](https://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html) 教程现将微信接入方式更新为 WeChatPadPro，替换标题 5 的内容，其他部分不变
+
+## 5. 部署消息平台
+
+### 5.1 通过 WeChatPadPro 接入微信
+
+> [!NOTE]
+> 1. 需要 AstrBot 版本 >= 3.5.10
+> 2. 这个接入方式不受微信官方支持，使用的是 [WeChatPadPro](https://github.com/luolin-ai/WeChatPadPro)。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://blog.lihe.site/post/%E3%80%90-geng-xin-%E3%80%91Docker%20-da-jian-wei-xin-ji-qi-ren.html">
+<meta property="og:image" content="https://blog.lihe.site/favicon.svg">
+<title>【更新】Docker 搭建微信机器人</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+<style>.markdown-alert{padding:0.5rem 1rem;margin-bottom:1rem;border-left:.25em solid var(--borderColor-default,var(--color-border-default));}.markdown-alert .markdown-alert-title {display:flex;font-weight:var(--base-text-weight-medium,500);align-items:center;line-height:1;}.markdown-alert>:first-child {margin-top:0;}.markdown-alert>:last-child {margin-bottom:0;}</style><style>.markdown-alert.markdown-alert-note {border-left-color:var(--borderColor-accent-emphasis, var(--color-accent-emphasis));background-color:var(--color-accent-subtle);}.markdown-alert.markdown-alert-note .markdown-alert-title {color: var(--fgColor-accent,var(--color-accent-fg));}</style><style>.markdown-alert.markdown-alert-tip {border-left-color:var(--borderColor-success-emphasis, var(--color-success-emphasis));background-color:var(--color-success-subtle);}.markdown-alert.markdown-alert-tip .markdown-alert-title {color: var(--fgColor-success,var(--color-success-fg));}</style><style>.markdown-alert.markdown-alert-warning {border-left-color:var(--borderColor-attention-emphasis, var(--color-attention-emphasis));background-color:var(--color-attention-subtle);}.markdown-alert.markdown-alert-warning .markdown-alert-title {color: var(--fgColor-attention,var(--color-attention-fg));}</style>
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">【更新】Docker 搭建微信机器人</h1>
+<div class="title-right">
+    <a href="http://blog.lihe.site" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/lihetongxue/lihetongxue.github.io/issues/10" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><h2>前言</h2>
+<blockquote>
+<p>由于 Gewechat 项目不再维护及可用，现采用 WeChatPadPro 方法替代</p>
+</blockquote>
+<p>之前介绍的 <a href="https://blog.lihe.site/post/Docker%20-da-jian-wei-xin-ji-qi-ren.html" rel="nofollow">Docker 搭建微信机器人</a> 教程现将微信接入方式更新为 WeChatPadPro，替换标题 5 的内容，其他部分不变</p>
+<h2>5. 部署消息平台</h2>
+<h3>5.1 通过 WeChatPadPro 接入微信</h3>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ol>
+<li>需要 AstrBot 版本 &gt;= 3.5.10</li>
+<li>这个接入方式不受微信官方支持，使用的是 <a href="https://github.com/luolin-ai/WeChatPadPro">WeChatPadPro</a>。请注意风险。如果要使用官方支持的方式，&gt; 请使用企业微信的方式接入</li>
+<li>请控制聊天频率。如果过于频繁使用（同一时间发送消息次数过多），可能会导致更高的风控风险，请注意使用频率</li>
+</ol>
+</div>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p>
+<ol>
+<li>仅支持微信个人号</li>
+<li>微信限制，需要手动扫码登录</li>
+<li>微信限制一个微信号必须有一台手机在线才能登录其他端。因此，你需要有一台手机登录该微信，才能使用该接入方式。请尽量保证手机和部署地设备处于同一城市。</li>
+</ol>
+</div>
+<h4>5.1.1 部署 WeChatPadPro</h4>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p>
+<ol>
+<li>这里仅通过 Docker 部署，且仅在 Linux 上测试了部署的成功性</li>
+<li>不支持 <code class="notranslate">arm64</code> 架构的设备</li>
+</ol>
+</div>
+<p><strong>克隆 WeChatPadPro-Docker 到本地并进入：</strong></p>
+<pre class="notranslate"><code class="notranslate"> git clone https://github.com/bclz-wyz/WeChatPadPro-Docker --depth 1
+ 
+ cd WeChatPadPro-Docker
+</code></pre>
+<p><strong>创建 main 和 mysql 目录：</strong></p>
+<pre class="notranslate"><code class="notranslate">mkdir main &amp;&amp; mkdir mysql
+</code></pre>
+<p><strong>进入 main 目录并克隆 WeChatPadPro 到当前目录：</strong></p>
+<pre class="notranslate"><code class="notranslate">cd main
+
+git clone https://github.com/luolin-ai/WeChatPadPro --depth 1
+</code></pre>
+<p><strong>将 WeChatPadPro 内所有文件放到 main 文件夹下：</strong></p>
+<pre class="notranslate"><code class="notranslate">mv WeChatPadPro/* .
+</code></pre>
+<p><strong>释出 stay 可执行文件：</strong></p>
+<pre class="notranslate"><code class="notranslate">unzip 859_service_linux.zip
+</code></pre>
+<p><strong>覆盖 WeChatPadPro 原来的 setting.json 文件：</strong></p>
+<pre class="notranslate"><code class="notranslate">cd .. # 回到 WeChatPadPro-Docker 目录
+
+mv setting.json main/assets/setting.json
+</code></pre>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>你可以根据你的需要，编辑 <code class="notranslate">main/assets/setting.json</code> 文件，也可以不编辑。建议将 <code class="notranslate">adminKey</code> 修改为更安全的密码</p>
+</div>
+<p><strong>运行容器并查看 WeChatPadPro 日志：</strong></p>
+<pre class="notranslate"><code class="notranslate">docker compose up -d
+
+docker logs wechatpadpro
+</code></pre>
+<p><strong>正常情况下，会出现如下日志：</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">版本号: v20250515.00
+WeChatPadPro
+🚀 基于 WeChat Pad 协议的高级微信管理工具 🚀
+...
+...
+如有任何问题或建议，欢迎通过 GitHub Issues 或邮件与我们联系。
+======== ADMIN_KEY === <span class="pl-k">******</span> ========
+connect MySQL success
+auto create MySQL tables success
+connect Redis success
+updateApiVersion success</pre></div>
+<p><strong>如果发现报错：</strong></p>
+<ol>
+<li>MySQL 容器还没有启动成功</li>
+</ol>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3cd5e3d062b9800ac3ec6b07969f6b0f5754d5a71274186dfca6aa67ba1ff311/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67"><img src="https://camo.githubusercontent.com/3cd5e3d062b9800ac3ec6b07969f6b0f5754d5a71274186dfca6aa67ba1ff311/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846bd067c5ac.png" style="max-width: 100%;"></a></p>
+<p>确认 <code class="notranslate">wx_mysql</code> 容器是为 healthy，再重启 <code class="notranslate">wechatpadpro</code> 容器</p>
+<ol start="2">
+<li>Redis 容器启动失败</li>
+</ol>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5a2e03db5e4c738e63e8771cec7a9e8d1aad6a42fa8bb0b64675a01998a6dabb/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67"><img src="https://camo.githubusercontent.com/5a2e03db5e4c738e63e8771cec7a9e8d1aad6a42fa8bb0b64675a01998a6dabb/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846be3adbd50.png" style="max-width: 100%;"></a></p>
+<p>编辑 <code class="notranslate">./WeChatPadPro-Docker/redis/conf/redis.conf</code> 文件，删除或注释以下内容：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">redis_max_conn_lifetime 30
+redis_idle_timeout 3000
+redis_connect_timeout 1000
+redis_max_idle 10
+redis_max_active 20</pre></div>
+<p>重启 Redis 容器，确保两个容器 <code class="notranslate">wx_redis</code> 和 <code class="notranslate">wx_mysql</code> 都为 healthy 后，再重启 <code class="notranslate">wechatpadpro</code> 容器</p>
+<h4>5.1.2 在 AstrBot 中配置  <code class="notranslate">wechatpadpro</code>  适配器</h4>
+<p><strong>在 AstrBot 的管理面板中，打开消息平台 -&gt; 新增适配器 -&gt; wechatpadpro(微信)，如下图所示：</strong></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/c326de07f61da55e9225a0a980212de11e3614ae700b0f5c1d0ab161ef4833e7/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67"><img src="https://camo.githubusercontent.com/c326de07f61da55e9225a0a980212de11e3614ae700b0f5c1d0ab161ef4833e7/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846c1e2771c2.png" style="max-width: 100%;"></a></p>
+<ul>
+<li>
+<p><strong>admin_key：</strong> 上面步骤中，setting.json 下的 adminKey 的值</p>
+</li>
+<li>
+<p><strong>host：</strong> 填写部署 WeChatPadPro 项目的机器的主机地址，这里直接填你的服务器IP，不要填 localhost</p>
+</li>
+<li>
+<p><strong>port：</strong> Docker 部署默认填 <code class="notranslate">38849</code>，如果没修改填这个即可</p>
+</li>
+</ul>
+<div class="markdown-alert markdown-alert-note"><p class="markdown-alert-title"><svg class="octicon octicon-info mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-6.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM6.5 7.75A.75.75 0 0 1 7.25 7h1a.75.75 0 0 1 .75.75v2.75h.25a.75.75 0 0 1 0 1.5h-2a.75.75 0 0 1 0-1.5h.25v-2h-.25a.75.75 0 0 1-.75-.75ZM8 6a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"></path></svg>Note</p><p>填写完成后，保存；由于 host 填的是服务器 IP,  服务器需要放行 <code class="notranslate">38849</code> 端口</p>
+</div>
+<p><strong>进入<code class="notranslate">控制台</code>，查看日志，如果连接成功，会出现如下日志：</strong></p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"> [12:50:16] [Core] [INFO] [wechatpadpro.wechatpadpro_adapter:69]: WeChatPadPro 设备不在线或无可用凭据，开始扫码登录流程。 
+ [12:50:16] [Core] [INFO] [wechatpadpro.wechatpadpro_adapter:189]: 成功获取授权码 
+ [12:50:16] [Core] [INFO] [wechatpadpro.wechatpadpro_adapter:81]: 请扫描以下二维码登录: https://api.pwmqr.com/qrcode/create/<span class="pl-k">?</span>url=http://weixin.qq.com/x/xxx
+ [12:50:16] [Core] [INFO] [wechatpadpro.wechatpadpro_adapter:251]: 请在 30 秒内扫码登录！！！</pre></div>
+<p>请打开微信扫码即可，如果超出了 30 秒，重新关开这个平台适配器即可</p>
+<div class="markdown-alert markdown-alert-warning"><p class="markdown-alert-title"><svg class="octicon octicon-alert mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M6.457 1.047c.659-1.234 2.427-1.234 3.086 0l6.082 11.378A1.75 1.75 0 0 1 14.082 15H1.918a1.75 1.75 0 0 1-1.543-2.575Zm1.763.707a.25.25 0 0 0-.44 0L1.698 13.132a.25.25 0 0 0 .22.368h12.164a.25.25 0 0 0 .22-.368Zm.53 3.996v2.5a.75.75 0 0 1-1.5 0v-2.5a.75.75 0 0 1 1.5 0ZM9 11a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"></path></svg>Warning</p><p><strong>在第一次掉线之后请务必执行以下工作流程，否则将会严重提高风控风险</strong></p>
+<ol>
+<li>
+<p>进入 WechatPadPro 的 API 接口界面，将你刚刚扫码登录的账号的 token 填入 “TOKEN_KEY”，在 ADMIN_KEY 处输入自己设置的密钥。然后点击“连接”</p>
+</li>
+<li>
+<p>然后往下翻找到“登录”——&gt;”唤醒登录（只限扫码登陆）“，点击 ”Try it out“，再点击 ”Execute“。此时，您扫码的那台机器会弹出登录界面。这个时候就能实现老设备登录不会触发风控</p>
+</li>
+</ol>
+<p>Token Key 即授权码，获取方式如下：</p>
+<p>打开 AstrBot 数据目录（AstrBot/data 目录），找到 <code class="notranslate">wechatpadpro_credentials.json</code> 文件，打开之后，其中的 <code class="notranslate">auth_key</code> 即为对应 <code class="notranslate">wxid</code> 的授权码</p>
+</div>
+<h4>5.1.3 接入大模型服务</h4>
+<p>在<strong>管理面板</strong>-&gt;<strong>服务提供商</strong>-&gt;**+**<strong>新增服务提供商</strong> 处配置各种大语言模型服务</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67"><img src="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6723684470.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67"><img src="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c672f4096bf.png" style="max-width: 100%;"></a></p>
+<p>选择想要接入的大模型，例如<code class="notranslate">Deepseek</code>,填入获取的 <strong>API key</strong> 保存即可</p>
+<h4>5.1.5 食用方法</h4>
+<p><strong>查看日志确认登录成功：</strong></p>
+<p>在控制台查看日志，若登录成功，则会显示 <code class="notranslate">成功登录绿泡泡及回调信息等</code></p>
+<p><strong>在微信测试：</strong></p>
+<p>可以私发消息给机器人微信，如<code class="notranslate">/help</code>可以查看内置指令</p>
+<p>可将机器人加入群聊，通过<code class="notranslate">@机器人</code>可以进行唤醒对话，例如<code class="notranslate">@机器人 请帮我写一首关于爱情的诗</code></p>
+<p><strong>开启插件：</strong></p>
+<p>可以在管理面板的<strong>插件</strong>添加插件开启或禁止，插件的使用可以点击插件的<strong>帮助</strong>来查看使用方法</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67"><img src="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c670d489976.png" style="max-width: 100%;"></a></p>
+<h4>5.1.6 注意事项</h4>
+<p>一旦登录成功，请牢记在配置时配置的 username，如果更换，则相当于使用新设备登录。频繁新设备登录容易触发风控</p>
+<h2>6. 结尾</h2>
+<div class="markdown-alert markdown-alert-tip"><p class="markdown-alert-title"><svg class="octicon octicon-light-bulb mr-2" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="M8 1.5c-2.363 0-4 1.69-4 3.75 0 .984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75 0 0 1-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456 0 0 0-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863 0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751 0 0 1-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304 0-2.06-1.637-3.75-4-3.75ZM5.75 12h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5ZM6 15.25a.75.75 0 0 1 .75-.75h2.5a.75.75 0 0 1 0 1.5h-2.5a.75.75 0 0 1-.75-.75Z"></path></svg>Tip</p><p>觉得不错的可以去<a href="https://github.com/Soulter/AstrBot">Github</a>给项目点个<code class="notranslate">Star</code></p>
+</div>
+<p>在使用的过程中如果遇到问题，可以先自行查看文档，解决不了可以去<code class="notranslate">Github</code>提交issues</p>
+<p>更多的使用方法以及功能可以参考<a href="https://astrbot.app/what-is-astrbot.html" rel="nofollow">官网文档</a></p></div>
+<div style="font-size:small;margin-top:8px;float:right;">转载请注明出处</div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="http://blog.lihe.site">我不是Eric</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if("06/29/2023"!=""){
+    var startSite=new Date("06/29/2023");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>
+
+</html>

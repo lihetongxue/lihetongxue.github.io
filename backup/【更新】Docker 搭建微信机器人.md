@@ -63,7 +63,7 @@ unzip 859_service_linux.zip
 ```
 cd .. # 回到 WeChatPadPro-Docker 目录
 
-mv setting.json main/assets/setting.json
+mv main/assets/setting.json setting.json
 ```
 
 > [!TIP]

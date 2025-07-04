@@ -187,4 +187,4 @@ docker compose restart sillytavern
 [https://sqivg8d05rm.feishu.cn/wiki/QEZ9wcbF9ilvLZkVMEscHQxwnoh](https://sqivg8d05rm.feishu.cn/wiki/QEZ9wcbF9ilvLZkVMEscHQxwnoh)
 
 > [!IMPORTANT]
-> 感谢文档的编写者，特在此引用并注明！
+> 感谢飞书文档的编写者，特在此引用并注明！

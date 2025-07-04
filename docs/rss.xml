@@ -1,5 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.lihe.site/favicon.svg</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Fri, 27 Jun 2025 09:36:40 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>【更新】Docker 搭建微信机器人</title><link>http://blog.lihe.site/post/%E3%80%90-geng-xin-%E3%80%91Docker%20-da-jian-wei-xin-ji-qi-ren.html</link><description>## 前言
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0"><channel><title>我不是Eric</title><link>http://blog.lihe.site</link><description>人生的道路固然漫长，但紧要之处常常只有几步</description><copyright>我不是Eric</copyright><docs>http://www.rssboard.org/rss-specification</docs><generator>python-feedgen</generator><image><url>https://blog.lihe.site/favicon.svg</url><title>avatar</title><link>http://blog.lihe.site</link></image><lastBuildDate>Fri, 04 Jul 2025 08:25:14 +0000</lastBuildDate><managingEditor>我不是Eric</managingEditor><ttl>60</ttl><webMaster>我不是Eric</webMaster><item><title>Docker 部署云酒馆</title><link>http://blog.lihe.site/post/Docker%20-bu-shu-yun-jiu-guan.html</link><description>## 1. 介绍
+
+&gt; [!NOTE]
+&gt; SillyTavern 是一个充满激情的项目，由一群热忱的 LLM 爱好者社区倾情打造，并将永远免费开源
+
+### 1.1 SillyTavern 是什么？
+
+**SillyTavern**（俗称酒馆）是一个本地安装的用户界面，允许您与文本生成 LLM、图像生成引擎和 TTS 语音模型进行交互；主要是用来玩角色扮演, 其中提供了非常丰富的自定义选项, 备受NSFW用户喜爱。</description><guid isPermaLink="true">http://blog.lihe.site/post/Docker%20-bu-shu-yun-jiu-guan.html</guid><pubDate>Fri, 04 Jul 2025 08:24:47 +0000</pubDate></item><item><title>【更新】Docker 搭建微信机器人</title><link>http://blog.lihe.site/post/%E3%80%90-geng-xin-%E3%80%91Docker%20-da-jian-wei-xin-ji-qi-ren.html</link><description>## 前言
 
 &gt; 由于 Gewechat 项目不再维护及可用，现采用 WeChatPadPro 方法替代
 

@@ -19,7 +19,7 @@
         "love": "https://yiyanping.love",
         "status": "https://uptime.tuji.uk",
         "servers": "https://status.lihe.site",
-        "blog": "https://blog.tuji.uk"
+        "blog": "https://lihe.blog"
     },
     "commentLabelColor": "#006b75",
     "yearColorList": ["#bc4c00", "#0969da", "#1f883d", "#A333D0"],

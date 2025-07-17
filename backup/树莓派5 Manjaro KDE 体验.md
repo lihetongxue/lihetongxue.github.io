@@ -40,7 +40,7 @@
 
 这里我推荐20250414日期的镜像，不过20240414的镜像似乎资源占用更低，但不在镜像列表了：
 
-manjaro镜像地址：https://github.com/manjaro-arm/opi5-images/releases/tag/20250414
+manjaro镜像地址：[https://github.com/manjaro-arm/opi5-images/releases/tag/20250414](https://github.com/manjaro-arm/opi5-images/releases/tag/20250414)
 
 2. 或者你可以直接通过硬盘盒在另一台电脑上将manjaro镜像写入，这似乎更直接点
 

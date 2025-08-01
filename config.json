@@ -29,7 +29,7 @@
     "dayTheme": "light",
     "nightTheme": "dark_colorblind",
     "urlMode": "pinyin",
-    "bottomText": "转载请注明出处",
+    "bottomText": "转载请注明出处 如需评论，请移步 <a href='https://lihe.blog' target='_blank'>lihe.blog</a>"
     "needComment": 0,
     "allHead": "<script src='https://blog.meekdai.com/Gmeek/plugins/GmeekVercount.js'></script><meta name='google-site-verification' content='fk5myH_Q725YO5cL2JrFYUukmGg-owc8NSCjbjK7c1Y' /><script async src='https://www.googletagmanager.com/gtag/js?id=G-xxxxx'></script><script>window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-xxxxxx');</script>",
     "script": "<script src='https://blog.meekdai.com/Gmeek/plugins/articletoc.js'></script><script src='https://blog.meekdai.com/Gmeek/plugins/lightbox.js'></script>"

@@ -182,12 +182,12 @@ updateApiVersion success</pre></div>
 <ol>
 <li>MySQL 容器还没有启动成功</li>
 </ol>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3cd5e3d062b9800ac3ec6b07969f6b0f5754d5a71274186dfca6aa67ba1ff311/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67"><img src="https://camo.githubusercontent.com/3cd5e3d062b9800ac3ec6b07969f6b0f5754d5a71274186dfca6aa67ba1ff311/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846bd067c5ac.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/9a33f73402af95de3e106185385a93e6edb18da5604fec8ea4977977107d3b03/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67"><img src="https://camo.githubusercontent.com/9a33f73402af95de3e106185385a93e6edb18da5604fec8ea4977977107d3b03/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366264303637633561632e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846bd067c5ac.png" style="max-width: 100%;"></a></p>
 <p>确认 <code class="notranslate">wx_mysql</code> 容器是为 healthy，再重启 <code class="notranslate">wechatpadpro</code> 容器</p>
 <ol start="2">
 <li>Redis 容器启动失败</li>
 </ol>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/5a2e03db5e4c738e63e8771cec7a9e8d1aad6a42fa8bb0b64675a01998a6dabb/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67"><img src="https://camo.githubusercontent.com/5a2e03db5e4c738e63e8771cec7a9e8d1aad6a42fa8bb0b64675a01998a6dabb/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846be3adbd50.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3b799812f281885028726561b11381d6b537bb267a87da41ecb966145026b0ff/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67"><img src="https://camo.githubusercontent.com/3b799812f281885028726561b11381d6b537bb267a87da41ecb966145026b0ff/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366265336164626435302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846be3adbd50.png" style="max-width: 100%;"></a></p>
 <p>编辑 <code class="notranslate">./WeChatPadPro-Docker/redis/conf/redis.conf</code> 文件，删除或注释以下内容：</p>
 <div class="highlight highlight-source-shell"><pre class="notranslate">redis_max_conn_lifetime 30
 redis_idle_timeout 3000
@@ -197,7 +197,7 @@ redis_max_active 20</pre></div>
 <p>重启 Redis 容器，确保两个容器 <code class="notranslate">wx_redis</code> 和 <code class="notranslate">wx_mysql</code> 都为 healthy 后，再重启 <code class="notranslate">wechatpadpro</code> 容器</p>
 <h4>5.1.2 在 AstrBot 中配置  <code class="notranslate">wechatpadpro</code>  适配器</h4>
 <p><strong>在 AstrBot 的管理面板中，打开消息平台 -&gt; 新增适配器 -&gt; wechatpadpro(微信)，如下图所示：</strong></p>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/c326de07f61da55e9225a0a980212de11e3614ae700b0f5c1d0ab161ef4833e7/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67"><img src="https://camo.githubusercontent.com/c326de07f61da55e9225a0a980212de11e3614ae700b0f5c1d0ab161ef4833e7/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846c1e2771c2.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/cd3d54918931431b02ee51cc0b47067b25ee32cd5d5476af2b25c476328117cf/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67"><img src="https://camo.githubusercontent.com/cd3d54918931431b02ee51cc0b47067b25ee32cd5d5476af2b25c476328117cf/68747470733a2f2f6c6968652e696e6b2f323032352f30362f30392f363834366331653237373163322e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/06/09/6846c1e2771c2.png" style="max-width: 100%;"></a></p>
 <ul>
 <li>
 <p><strong>admin_key：</strong> 上面步骤中，setting.json 下的 adminKey 的值</p>
@@ -231,8 +231,8 @@ redis_max_active 20</pre></div>
 </div>
 <h4>5.1.3 接入大模型服务</h4>
 <p>在<strong>管理面板</strong>-&gt;<strong>服务提供商</strong>-&gt;**+**<strong>新增服务提供商</strong> 处配置各种大语言模型服务</p>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67"><img src="https://camo.githubusercontent.com/ca9431b41aaf10d03a27da52ba0e01b14942623956c2e49055da47f78ddff689/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6723684470.png" style="max-width: 100%;"></a><br>
-<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67"><img src="https://camo.githubusercontent.com/67ca8ceaa46ed0c429a385e8b431068533c015a723d32cb49aba1d1d44c54356/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c672f4096bf.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/2ab7db9f864273db6e3fd2efc104af9b3eddc61a839b26d7308461d937f4286c/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67"><img src="https://camo.githubusercontent.com/2ab7db9f864273db6e3fd2efc104af9b3eddc61a839b26d7308461d937f4286c/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732333638343437302e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c6723684470.png" style="max-width: 100%;"></a><br>
+<a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/9b8cf52ae0e8ee0f2dffed7be5e6c8c8dcca82f70de5f684d815726b3114a4bc/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67"><img src="https://camo.githubusercontent.com/9b8cf52ae0e8ee0f2dffed7be5e6c8c8dcca82f70de5f684d815726b3114a4bc/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363732663430393662662e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c672f4096bf.png" style="max-width: 100%;"></a></p>
 <p>选择想要接入的大模型，例如<code class="notranslate">Deepseek</code>,填入获取的 <strong>API key</strong> 保存即可</p>
 <h4>5.1.5 食用方法</h4>
 <p><strong>查看日志确认登录成功：</strong></p>
@@ -242,7 +242,7 @@ redis_max_active 20</pre></div>
 <p>可将机器人加入群聊，通过<code class="notranslate">@机器人</code>可以进行唤醒对话，例如<code class="notranslate">@机器人 请帮我写一首关于爱情的诗</code></p>
 <p><strong>开启插件：</strong></p>
 <p>可以在管理面板的<strong>插件</strong>添加插件开启或禁止，插件的使用可以点击插件的<strong>帮助</strong>来查看使用方法</p>
-<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67"><img src="https://camo.githubusercontent.com/3b611af51c54b2ca90cd1cd758b80910d65fe7f238ff4c44138b93c9132a2059/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c670d489976.png" style="max-width: 100%;"></a></p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/380dc4ca5a6d2786f9420d337ae0595fa57bc7a16ac5e61bda0a120f11cae23a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67"><img src="https://camo.githubusercontent.com/380dc4ca5a6d2786f9420d337ae0595fa57bc7a16ac5e61bda0a120f11cae23a/68747470733a2f2f6c6968652e696e6b2f323032352f30332f30342f363763363730643438393937362e706e67" alt="image" data-canonical-src="https://lihe.ink/2025/03/04/67c670d489976.png" style="max-width: 100%;"></a></p>
 <h4>5.1.6 注意事项</h4>
 <p>一旦登录成功，请牢记在配置时配置的 username，如果更换，则相当于使用新设备登录。频繁新设备登录容易触发风控</p>
 <h2>6. 结尾</h2>

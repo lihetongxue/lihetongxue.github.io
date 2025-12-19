@@ -1,3 +1,5 @@
+该教程已更新，请前往：[[最新]AstrBot + WeChatPadPro 搭建微信机器人](https://lihe.blog/2025/12/19/%e6%9c%80%e6%96%b0astrbot-wechatpadpro-%e6%90%ad%e5%bb%ba%e5%be%ae%e4%bf%a1%e6%9c%ba%e5%99%a8%e4%ba%ba/)
+
 ## 前言
 
 > 由于 Gewechat 项目不再维护及可用，现采用 WeChatPadPro 方法替代
